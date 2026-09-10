@@ -46,7 +46,7 @@ export function OverviewPage() {
     useState<TimeRange>("1m");
 
   return (
-    <div className="w-full max-w-[1440px] space-y-5 p-4 sm:p-5">
+    <div className="w-full space-y-5 p-4 sm:p-5">
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <KPICard
           label="Requests / sec"
