@@ -1,9 +1,8 @@
-
+import { MemoryRouter } from "react-router";
 import {
   render,
   screen,
 } from "@testing-library/react";
-
 import {
   describe,
   expect,
@@ -11,18 +10,45 @@ import {
 } from "vitest";
 
 import {
-  OverviewPage
+  OverviewPage,
 } from "@/features/overview/components/OverviewPage";
-
 
 describe("OverviewPage", () => {
   it("renders the PulseOps dashboard", () => {
-    render(<OverviewPage />);
+    render(
+      <MemoryRouter>
+        <OverviewPage />
+      </MemoryRouter>,
+    );
 
     expect(
-      screen.getByRole("heading", {
-        name: "PulseOps",
-      }),
+      screen.getByText(
+        "Realtime Traffic",
+      ),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(
+        "System Health",
+      ),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(
+        "Live Request Stream",
+      ),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(
+        "Endpoint Performance",
+      ),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(
+        "Recent Incidents",
+      ),
     ).toBeInTheDocument();
   });
 });

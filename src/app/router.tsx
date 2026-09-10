@@ -1,111 +1,131 @@
 import { createBrowserRouter } from "react-router";
 
 import { AppShell } from "@/app/layouts/AppShell";
-import { AnalyticsPage } from "@/features/analytics/components/AnalyticsPage";
-import { IncidentsPage } from "@/features/incidents/components/IncidentsPage";
-import { LiveTrafficPage } from "@/features/live-traffic/components/LiveTrafficPage";
-import { OverviewPage } from "@/features/overview/components/OverviewPage";
-import { RequestsPage } from "@/features/requests/components/RequestsPage";
-import { ServiceDetailPage } from "@/features/services/components/ServiceDetailPage";
-import { ServicesPage } from "@/features/services/components/ServicesPage";
 
-function DocumentationPage() {
-  return (
-    <div className="p-5">
-      <h2 className="text-lg font-semibold text-hi">
-        Documentation
-      </h2>
+export const router = createBrowserRouter([
+  {
+    element: <AppShell />,
 
-      <p className="mt-2 text-sm text-lo">
-        Documentation will be added later.
-      </p>
-    </div>
-  );
-}
-
-function SettingsPage() {
-  return (
-    <div className="p-5">
-      <h2 className="text-lg font-semibold text-hi">
-        Settings
-      </h2>
-
-      <p className="mt-2 text-sm text-lo">
-        Settings will be added later.
-      </p>
-    </div>
-  );
-}
-
-function NotFoundPage() {
-  return (
-    <div className="flex min-h-[60vh] flex-col items-center justify-center gap-2">
-      <div className="font-mono text-3xl font-semibold text-lo">
-        404
-      </div>
-
-      <p className="text-sm text-mid">
-        Page not found.
-      </p>
-    </div>
-  );
-}
-
-export const router =
-  createBrowserRouter([
-    {
-      element: <AppShell />,
-
-      children: [
-        {
-          index: true,
-          element: <OverviewPage />,
+    children: [
+      {
+        index: true,
+        lazy: {
+          Component: async () =>
+            (
+              await import(
+                "@/features/overview/components/OverviewPage"
+              )
+            ).OverviewPage,
         },
+      },
 
-        {
-          path: "traffic",
-          element: <LiveTrafficPage />,
+      {
+        path: "traffic",
+        lazy: {
+          Component: async () =>
+            (
+              await import(
+                "@/features/live-traffic/components/LiveTrafficPage"
+              )
+            ).LiveTrafficPage,
         },
+      },
 
-        {
-          path: "services",
-          element: <ServicesPage />,
+      {
+        path: "services",
+        lazy: {
+          Component: async () =>
+            (
+              await import(
+                "@/features/services/components/ServicesPage"
+              )
+            ).ServicesPage,
         },
+      },
 
-        {
-          path: "services/:id",
-          element: <ServiceDetailPage />,
+      {
+        path: "services/:id",
+        lazy: {
+          Component: async () =>
+            (
+              await import(
+                "@/features/services/components/ServiceDetailPage"
+              )
+            ).ServiceDetailPage,
         },
+      },
 
-        {
-          path: "requests",
-          element: <RequestsPage />,
+      {
+        path: "requests",
+        lazy: {
+          Component: async () =>
+            (
+              await import(
+                "@/features/requests/components/RequestsPage"
+              )
+            ).RequestsPage,
         },
+      },
 
-        {
-          path: "incidents",
-          element: <IncidentsPage />,
+      {
+        path: "incidents",
+        lazy: {
+          Component: async () =>
+            (
+              await import(
+                "@/features/incidents/components/IncidentsPage"
+              )
+            ).IncidentsPage,
         },
+      },
 
-        {
-          path: "analytics",
-          element: <AnalyticsPage />,
+      {
+        path: "analytics",
+        lazy: {
+          Component: async () =>
+            (
+              await import(
+                "@/features/analytics/components/AnalyticsPage"
+              )
+            ).AnalyticsPage,
         },
+      },
 
-        {
-          path: "docs",
-          element: <DocumentationPage />,
+      {
+        path: "docs",
+        lazy: {
+          Component: async () =>
+            (
+              await import(
+                "@/features/documentation/components/DocumentationPage"
+              )
+            ).DocumentationPage,
         },
+      },
 
-        {
-          path: "settings",
-          element: <SettingsPage />,
+      {
+        path: "settings",
+        lazy: {
+          Component: async () =>
+            (
+              await import(
+                "@/features/settings/components/SettingsPage"
+              )
+            ).SettingsPage,
         },
+      },
 
-        {
-          path: "*",
-          element: <NotFoundPage />,
+      {
+        path: "*",
+        lazy: {
+          Component: async () =>
+            (
+              await import(
+                "@/app/components/NotFoundPage"
+              )
+            ).NotFoundPage,
         },
-      ],
-    },
-  ]);
+      },
+    ],
+  },
+]);
