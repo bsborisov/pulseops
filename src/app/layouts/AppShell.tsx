@@ -1,17 +1,65 @@
-import { Outlet } from "react-router";
+import { useState } from "react";
+import {
+  Outlet,
+  useLocation,
+} from "react-router";
 
+import { getPageTitle } from "@/app/navigation";
+
+import { MobileNavigation } from "./MobileNavigation";
 import { Sidebar } from "./Sidebar";
 import { Topbar } from "./Topbar";
 
 export function AppShell() {
+  const { pathname } = useLocation();
+
+  const [sidebarCollapsed, setSidebarCollapsed] =
+    useState(false);
+
+  const [
+    mobileNavigationOpen,
+    setMobileNavigationOpen,
+  ] = useState(false);
+
+  const title = getPageTitle(pathname);
+
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100">
-      <Sidebar />
+    <div className="flex h-screen overflow-hidden bg-bg text-hi">
+      {/* Desktop */}
+      <Sidebar
+        collapsed={sidebarCollapsed}
+        onCollapsedChange={
+          setSidebarCollapsed
+        }
+        className="hidden lg:flex"
+      />
 
-      <div className="lg:pl-64">
-        <Topbar />
+      {/* Tablet */}
+      <Sidebar
+        collapsed
+        showCollapseButton={false}
+        className="hidden md:flex lg:hidden"
+      />
 
-        <main className="min-h-[calc(100vh-4rem)] p-4 sm:p-6 lg:p-8">
+      <MobileNavigation
+        open={mobileNavigationOpen}
+        onClose={() =>
+          setMobileNavigationOpen(false)
+        }
+      />
+
+      <div className="flex min-w-0 flex-1 flex-col">
+        <Topbar
+          title={title}
+          onOpenMobileNavigation={() =>
+            setMobileNavigationOpen(true)
+          }
+        />
+
+        <main
+          id="main-content"
+          className="min-w-0 flex-1 overflow-y-auto"
+        >
           <Outlet />
         </main>
       </div>
