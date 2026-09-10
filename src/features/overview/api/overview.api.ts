@@ -1,5 +1,5 @@
 import { getJson } from "@/lib/http";
-import type { OverviewSnapshot } from "@/types/monitoring";
+import type { OverviewSnapshot } from "@shared/monitoring";
 
 interface GetOverviewOptions {
   signal?: AbortSignal;

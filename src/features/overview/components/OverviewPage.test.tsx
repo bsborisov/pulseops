@@ -24,9 +24,7 @@ import {
   OverviewPage,
 } from "@/features/overview/components/OverviewPage";
 
-import type {
-  OverviewSnapshot,
-} from "@/types/monitoring";
+import type { OverviewSnapshot } from "@shared/monitoring";
 
 const snapshot: OverviewSnapshot = {
   kpi: {

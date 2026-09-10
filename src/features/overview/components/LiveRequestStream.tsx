@@ -8,9 +8,8 @@ import {
   StatusBadge,
 } from "@/components/ui/Badge";
 
-import type {
-  RequestEvent,
-} from "@/types/monitoring";
+import type { RequestEvent } from "@shared/monitoring";
+
 import { cn } from "@/lib/utils";
 
 interface LiveRequestStreamProps {

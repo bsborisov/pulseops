@@ -7,7 +7,7 @@ import {
 import type {
   Incident,
   IncidentSeverity,
-} from "@/types/monitoring";
+} from "@shared/monitoring";
 import { cn } from "@/lib/utils";
 
 interface RecentIncidentsProps {

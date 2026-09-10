@@ -17,10 +17,11 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": fileURLToPath(
-        new URL(
-          "./src",
-          import.meta.url,
-        ),
+        new URL("./src", import.meta.url),
+      ),
+
+      "@shared": fileURLToPath(
+        new URL("./shared", import.meta.url),
       ),
     },
   },
@@ -32,6 +33,13 @@ export default defineConfig({
           "http://127.0.0.1:4000",
 
         changeOrigin: true,
+      },
+
+      "/ws": {
+        target:
+          "ws://127.0.0.1:4000",
+
+        ws: true,
       },
     },
   },

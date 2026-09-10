@@ -6,7 +6,7 @@ import type {
   OverviewSnapshot,
   RequestEvent,
   ServiceHealth,
-} from "../../src/types/monitoring.ts";
+} from "../../shared/monitoring.ts";
 
 
 const BASE_TIMESTAMP =

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { RealtimeChart } from "@/components/charts/RealtimeChart";
 import { KPICard } from "@/components/ui/KPICard";
-import type { TimeRange } from "@/types/monitoring";
+import type { TimeRange } from "@shared/monitoring";
 import { useOverviewQuery } from "@/features/overview/queries/overview.queries";
 import { OverviewError } from "./OverviewError";
 import { OverviewSkeleton } from "./OverviewSkeleton";

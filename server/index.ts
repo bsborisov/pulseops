@@ -4,9 +4,9 @@ import {
   type ServerResponse,
 } from "node:http";
 
-import {
-  getOverviewSnapshot,
-} from "./data/overview.ts";
+import { getOverviewSnapshot } from "./data/overview.ts";
+import { createRealtimeServer } from "./realtime/websocket.ts";
+import { startMonitoringSimulator } from "./realtime/simulator.ts";
 
 const HOST = "127.0.0.1";
 const PORT = Number(
@@ -72,6 +72,14 @@ function handleRequest(
 const server =
   createServer(handleRequest);
 
+const realtime =
+  createRealtimeServer(server);
+
+const stopSimulator =
+  startMonitoringSimulator(
+    realtime.broadcast,
+  );
+
 server.listen(
   PORT,
   HOST,
@@ -80,4 +88,22 @@ server.listen(
       `PulseOps API listening on http://${HOST}:${PORT}`,
     );
   },
+);
+
+function shutdown() {
+  stopSimulator();
+
+  server.close(() => {
+    process.exit(0);
+  });
+}
+
+process.once(
+  "SIGINT",
+  shutdown,
+);
+
+process.once(
+  "SIGTERM",
+  shutdown,
 );

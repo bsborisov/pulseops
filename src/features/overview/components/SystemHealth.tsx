@@ -2,7 +2,7 @@ import { useNavigate } from "react-router";
 
 import type {
   ServiceHealth,
-} from "@/types/monitoring";
+} from "@shared/monitoring";
 import { cn } from "@/lib/utils";
 
 interface SystemHealthProps {

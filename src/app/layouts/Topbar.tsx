@@ -5,11 +5,18 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-import {
-  ConnectionIndicator,
-  type ConnectionState,
-} from "@/components/ui/ConnectionIndicator";
+import { ConnectionIndicator } from "@/components/ui/ConnectionIndicator";
 import { cn } from "@/lib/utils";
+import type {
+  ConnectionState,
+} from "@/types/realtime";
+
+interface TopbarProps {
+  title: string;
+  connectionState: ConnectionState;
+  onOpenMobileNavigation:
+  () => void;
+}
 
 export type Environment =
   | "production"
@@ -36,17 +43,11 @@ const timeRanges: TimeRange[] = [
 
 export function Topbar({
   title,
+  connectionState,
   onOpenMobileNavigation,
 }: TopbarProps) {
-  const [timeRange, setTimeRange] =
-    useState<TimeRange>("5m");
-
-  const [environment, setEnvironment] =
-    useState<Environment>("production");
-
-  // Temporary until the WebSocket layer exists.
-  const connectionState: ConnectionState =
-    "live";
+  const [timeRange, setTimeRange] = useState<TimeRange>("5m");
+  const [environment, setEnvironment] = useState<Environment>("production");
 
   return (
     <header className="flex h-12 shrink-0 items-center gap-3 border-b border-edge bg-surface/50 px-3 backdrop-blur-sm sm:px-4">

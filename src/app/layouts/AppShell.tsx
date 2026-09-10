@@ -4,6 +4,8 @@ import {
   useLocation,
 } from "react-router";
 
+import { useRealtimeMonitoring } from "@/hooks/useRealtimeMonitoring";
+
 import { getPageTitle } from "@/app/navigation";
 
 import { MobileNavigation } from "./MobileNavigation";
@@ -13,13 +15,10 @@ import { Topbar } from "./Topbar";
 export function AppShell() {
   const { pathname } = useLocation();
 
-  const [sidebarCollapsed, setSidebarCollapsed] =
-    useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileNavigationOpen, setMobileNavigationOpen] = useState(false);
 
-  const [
-    mobileNavigationOpen,
-    setMobileNavigationOpen,
-  ] = useState(false);
+  const connectionState = useRealtimeMonitoring();
 
   const title = getPageTitle(pathname);
 
@@ -51,8 +50,13 @@ export function AppShell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <Topbar
           title={title}
+          connectionState={
+            connectionState
+          }
           onOpenMobileNavigation={() =>
-            setMobileNavigationOpen(true)
+            setMobileNavigationOpen(
+              true,
+            )
           }
         />
 

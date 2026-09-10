@@ -1,10 +1,6 @@
 import { cn } from "@/lib/utils";
 
-export type ConnectionState =
-  | "connecting"
-  | "live"
-  | "reconnecting"
-  | "offline";
+import type { ConnectionState } from "@/types/realtime";
 
 interface ConnectionIndicatorProps {
   state: ConnectionState;

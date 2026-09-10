@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import type {
   HttpMethod,
   IncidentStatus,
-} from "@/types/monitoring";
+} from "@shared/monitoring";
 
 const methodStyles: Record<
   HttpMethod,

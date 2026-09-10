@@ -8,9 +8,7 @@ import {
   YAxis,
 } from "recharts";
 
-import type {
-  ChartPoint,
-} from "@/types/monitoring";
+import type { ChartPoint } from "@shared/monitoring";
 
 interface RealtimeChartProps {
   data: ChartPoint[];

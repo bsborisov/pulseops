@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 
 import type {
   EndpointStat,
-} from "@/types/monitoring";
+} from "@shared/monitoring";
 
 interface EndpointPerformanceProps {
   endpoints: EndpointStat[];
