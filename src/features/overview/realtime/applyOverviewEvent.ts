@@ -6,6 +6,9 @@ import type {
   RealtimeEvent,
 } from "@shared/realtime";
 
+export const MAX_REQUESTS = 5_000;
+export const MAX_CHART_POINTS = 60;
+
 function appendSparkline(
   values: number[],
   value: number,
@@ -80,7 +83,7 @@ export function applyOverviewEvent(
         chart: [
           ...current.chart,
           event.payload,
-        ].slice(-60),
+        ].slice(-MAX_CHART_POINTS),
       };
 
     case "request.created":
@@ -90,7 +93,7 @@ export function applyOverviewEvent(
         requests: [
           event.payload,
           ...current.requests,
-        ].slice(0, 250),
+        ].slice(0, MAX_REQUESTS),
       };
 
     case "service.updated":

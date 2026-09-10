@@ -5,7 +5,10 @@ import {
 } from "vitest";
 
 import type { OverviewSnapshot } from "@shared/monitoring";
-import { applyOverviewEvent } from "./applyOverviewEvent";
+import {
+  applyOverviewEvent,
+  MAX_REQUESTS,
+} from "./applyOverviewEvent";
 
 function createSnapshot(): OverviewSnapshot {
   return {
@@ -99,23 +102,27 @@ describe("applyOverviewEvent", () => {
     ).toBe("request-1");
   });
 
-  it("keeps at most 250 requests", () => {
+  it("keeps the request buffer bounded", () => {
     const snapshot =
       createSnapshot();
 
     snapshot.requests =
       Array.from(
         {
-          length: 250,
+          length:
+            MAX_REQUESTS,
         },
         (_, index) => ({
           id: `request-${index}`,
           time: "15:30:00",
-          method: "GET" as const,
-          endpoint: "/api/test",
+          method:
+            "GET" as const,
+          endpoint:
+            "/api/test",
           status: 200,
           latency: 50,
-          region: "EU" as const,
+          region:
+            "EU" as const,
           service: "Test",
         }),
       );
@@ -124,13 +131,15 @@ describe("applyOverviewEvent", () => {
       applyOverviewEvent(
         snapshot,
         {
-          type: "request.created",
+          type:
+            "request.created",
 
           payload: {
             id: "new-request",
             time: "15:31:00",
             method: "POST",
-            endpoint: "/api/orders",
+            endpoint:
+              "/api/orders",
             status: 201,
             latency: 70,
             region: "US",
@@ -139,12 +148,17 @@ describe("applyOverviewEvent", () => {
         },
       );
 
-    expect(result.requests).toHaveLength(250);
+    expect(
+      result.requests,
+    ).toHaveLength(
+      MAX_REQUESTS,
+    );
 
     expect(
       result.requests[0]?.id,
     ).toBe("new-request");
-  });
+  },
+  );
 
   it("keeps at most 60 chart points", () => {
     const snapshot =

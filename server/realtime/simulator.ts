@@ -38,6 +38,13 @@ const regions: Region[] = [
   "SA",
 ];
 
+const REQUEST_INTERVAL_MS = 42;
+
+const EVENTS_PER_SECOND =
+  Math.round(
+    1_000 / REQUEST_INTERVAL_MS,
+  );
+
 function randomBetween(
   min: number,
   max: number,
@@ -116,7 +123,7 @@ export function startMonitoringSimulator(
         payload:
           createRequest(),
       });
-    }, 400);
+    }, REQUEST_INTERVAL_MS);
 
   const metricsTimer =
     setInterval(() => {
@@ -162,7 +169,7 @@ export function startMonitoringSimulator(
           activeUsers,
           errorRate,
           latency,
-          eventsPerSecond: 24,
+          eventsPerSecond: EVENTS_PER_SECOND,
         },
       });
 

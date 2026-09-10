@@ -9,6 +9,7 @@ import {
   describe,
   expect,
   it,
+  vi,
 } from "vitest";
 
 import { LiveRequestStream } from "./LiveRequestStream";
@@ -38,128 +39,165 @@ const secondRequest:
   service: "Orders",
 };
 
-describe(
-  "LiveRequestStream",
-  () => {
-    it(
-      "freezes requests while paused and catches up when resumed",
-      async () => {
-        const user =
-          userEvent.setup();
-
-        const {
-          rerender,
-        } = render(
-          <LiveRequestStream
-            requests={[
-              firstRequest,
-            ]}
-            eventsPerSecond={24}
-          />,
+vi.mock(
+  "@tanstack/react-virtual",
+  () => ({
+    useVirtualizer: ({
+      count,
+    }: {
+      count: number;
+    }) => {
+      const visibleCount =
+        Math.min(
+          count,
+          20,
         );
 
-        expect(
-          screen.getByText(
-            "/api/users",
-          ),
-        ).toBeInTheDocument();
+      return {
+        getTotalSize: () =>
+          count * 28,
 
-        await user.click(
-          screen.getByRole(
-            "button",
+        getVirtualItems: () =>
+          Array.from(
             {
-              name: "Pause",
+              length:
+                visibleCount,
             },
+            (_, index) => ({
+              index,
+              key: index,
+              start:
+                28 +
+                index * 28,
+              size: 28,
+              end:
+                28 +
+                (index + 1) *
+                28,
+              lane: 0,
+            }),
           ),
-        );
+      };
+    },
+  }),
+);
 
-        rerender(
-          <LiveRequestStream
-            requests={[
-              secondRequest,
-              firstRequest,
-            ]}
-            eventsPerSecond={24}
-          />,
-        );
+describe("LiveRequestStream", () => {
+  it("freezes requests while paused and catches up when resumed", async () => {
+    const user =
+      userEvent.setup();
 
-        expect(
-          screen.queryByText(
-            "/api/orders",
-          ),
-        ).not.toBeInTheDocument();
-
-        await user.click(
-          screen.getByRole(
-            "button",
-            {
-              name: "Resume",
-            },
-          ),
-        );
-
-        expect(
-          screen.getByText(
-            "/api/orders",
-          ),
-        ).toBeInTheDocument();
-      },
+    const {
+      rerender,
+    } = render(
+      <LiveRequestStream
+        requests={[
+          firstRequest,
+        ]}
+        eventsPerSecond={24}
+      />,
     );
 
-    it(
-      "keeps cleared requests hidden while allowing new ones",
-      async () => {
-        const user =
-          userEvent.setup();
+    expect(
+      screen.getByText(
+        "/api/users",
+      ),
+    ).toBeInTheDocument();
 
-        const {
-          rerender,
-        } = render(
-          <LiveRequestStream
-            requests={[
-              firstRequest,
-            ]}
-            eventsPerSecond={24}
-          />,
-        );
-
-        await user.click(
-          screen.getByRole(
-            "button",
-            {
-              name: "Clear",
-            },
-          ),
-        );
-
-        expect(
-          screen.queryByText(
-            "/api/users",
-          ),
-        ).not.toBeInTheDocument();
-
-        rerender(
-          <LiveRequestStream
-            requests={[
-              secondRequest,
-              firstRequest,
-            ]}
-            eventsPerSecond={24}
-          />,
-        );
-
-        expect(
-          screen.getByText(
-            "/api/orders",
-          ),
-        ).toBeInTheDocument();
-
-        expect(
-          screen.queryByText(
-            "/api/users",
-          ),
-        ).not.toBeInTheDocument();
-      },
+    await user.click(
+      screen.getByRole(
+        "button",
+        {
+          name: "Pause",
+        },
+      ),
     );
+
+    rerender(
+      <LiveRequestStream
+        requests={[
+          secondRequest,
+          firstRequest,
+        ]}
+        eventsPerSecond={24}
+      />,
+    );
+
+    expect(
+      screen.queryByText(
+        "/api/orders",
+      ),
+    ).not.toBeInTheDocument();
+
+    await user.click(
+      screen.getByRole(
+        "button",
+        {
+          name: "Resume",
+        },
+      ),
+    );
+
+    expect(
+      screen.getByText(
+        "/api/orders",
+      ),
+    ).toBeInTheDocument();
   },
+  );
+
+  it("keeps cleared requests hidden while allowing new ones", async () => {
+    const user =
+      userEvent.setup();
+
+    const {
+      rerender,
+    } = render(
+      <LiveRequestStream
+        requests={[
+          firstRequest,
+        ]}
+        eventsPerSecond={24}
+      />,
+    );
+
+    await user.click(
+      screen.getByRole(
+        "button",
+        {
+          name: "Clear",
+        },
+      ),
+    );
+
+    expect(
+      screen.queryByText(
+        "/api/users",
+      ),
+    ).not.toBeInTheDocument();
+
+    rerender(
+      <LiveRequestStream
+        requests={[
+          secondRequest,
+          firstRequest,
+        ]}
+        eventsPerSecond={24}
+      />,
+    );
+
+    expect(
+      screen.getByText(
+        "/api/orders",
+      ),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByText(
+        "/api/users",
+      ),
+    ).not.toBeInTheDocument();
+  },
+  );
+},
 );

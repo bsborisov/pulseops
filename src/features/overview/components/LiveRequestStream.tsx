@@ -1,7 +1,11 @@
 import {
+  useCallback,
   useMemo,
+  useRef,
   useState,
 } from "react";
+
+import { useVirtualizer } from "@tanstack/react-virtual";
 
 import {
   MethodBadge,
@@ -10,17 +14,21 @@ import {
 
 import type { RequestEvent } from "@shared/monitoring";
 
-import { cn } from "@/lib/utils";
-
 interface LiveRequestStreamProps {
   requests: RequestEvent[];
   eventsPerSecond: number;
 }
 
+const REQUEST_ROW_HEIGHT = 28;
+const REQUEST_HEADER_HEIGHT = 28;
+
 export function LiveRequestStream({
   requests,
   eventsPerSecond,
 }: LiveRequestStreamProps) {
+  const scrollContainerRef =
+    useRef<HTMLDivElement>(null);
+
   const [
     pausedRequests,
     setPausedRequests,
@@ -96,6 +104,40 @@ export function LiveRequestStream({
       displayRequests,
     ]);
 
+  const getItemKey =
+    useCallback(
+      (index: number) =>
+        filteredRequests[index]?.id ??
+        index,
+      [filteredRequests],
+    );
+
+  // eslint-disable-next-line react-hooks/incompatible-library
+  const rowVirtualizer = useVirtualizer({
+    count:
+      filteredRequests.length,
+
+    getScrollElement: () =>
+      scrollContainerRef.current,
+
+    estimateSize: () =>
+      REQUEST_ROW_HEIGHT,
+
+    getItemKey,
+
+    overscan: 8,
+
+    scrollMargin:
+      REQUEST_HEADER_HEIGHT,
+
+    useFlushSync: false,
+
+    initialRect: {
+      width: 650,
+      height: 300,
+    },
+  });
+
   function togglePause() {
     if (paused) {
       setPausedRequests(null);
@@ -130,12 +172,13 @@ export function LiveRequestStream({
 
         <div className="flex items-center gap-1 text-[11px] text-lo">
           <span
-            className={cn(
+            className={[
               "size-1.5 rounded-full",
+
               paused
                 ? "bg-warn"
                 : "bg-ok animate-pulse",
-            )}
+            ].join(" ")}
           />
 
           {paused
@@ -146,28 +189,33 @@ export function LiveRequestStream({
         <input
           value={filter}
           onChange={(event) =>
-            setFilter(event.target.value)
+            setFilter(
+              event.target.value,
+            )
           }
           placeholder="Filter..."
           aria-label="Filter requests"
-          className={cn(
+          className={[
             "w-24 rounded border border-edge bg-bg px-2 py-1",
             "font-mono text-[11px] text-hi outline-none",
             "placeholder:text-lo focus:border-accent/50",
-          )}
+          ].join(" ")}
         />
 
         <button
           type="button"
           onClick={togglePause}
-          className={cn(
+          className={[
             "rounded border px-2 py-1 text-[11px] font-medium transition-colors",
+
             paused
               ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
               : "border-amber-500/30 bg-amber-500/10 text-amber-400",
-          )}
+          ].join(" ")}
         >
-          {paused ? "Resume" : "Pause"}
+          {paused
+            ? "Resume"
+            : "Pause"}
         </button>
 
         <button
@@ -179,10 +227,16 @@ export function LiveRequestStream({
         </button>
       </div>
 
-      <div className="flex-1 overflow-auto">
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 overflow-auto"
+      >
         <div className="min-w-[650px]">
           <div
-            className="grid gap-2 border-b border-edge px-4 py-1.5"
+            className={[
+              "sticky top-0 z-10 grid h-7 items-center gap-2",
+              "border-b border-edge bg-surface px-4",
+            ].join(" ")}
             style={{
               gridTemplateColumns:
                 "70px 55px minmax(160px,1fr) 55px 65px 45px",
@@ -205,53 +259,116 @@ export function LiveRequestStream({
             ))}
           </div>
 
-          {filteredRequests.map(
-            (request) => (
-              <div
-                key={request.id}
-                className="grid gap-2 border-b border-edge/50 px-4 py-1.5 transition-colors hover:bg-white/[0.02]"
-                style={{
-                  gridTemplateColumns:
-                    "70px 55px minmax(160px,1fr) 55px 65px 45px",
-                }}
-              >
-                <span className="font-mono text-[11px] text-lo tabular-nums">
-                  {request.time}
-                </span>
+          {filteredRequests.length >
+            0 ? (
+            <div
+              className="relative"
+              style={{
+                height:
+                  rowVirtualizer.getTotalSize(),
+              }}
+            >
+              {rowVirtualizer
+                .getVirtualItems()
+                .map(
+                  (virtualRow) => {
+                    const request =
+                      filteredRequests[
+                      virtualRow.index
+                      ];
 
-                <MethodBadge
-                  method={request.method}
-                />
+                    if (!request) {
+                      return null;
+                    }
 
-                <span className="truncate font-mono text-[11px] text-mid">
-                  {request.endpoint}
-                </span>
+                    return (
+                      <div
+                        key={
+                          virtualRow.key
+                        }
+                        data-index={
+                          virtualRow.index
+                        }
+                        data-testid="request-row"
+                        className={[
+                          "absolute left-0 top-0 grid w-full items-center gap-2",
+                          "border-b border-edge/50 px-4",
+                          "transition-colors hover:bg-white/[0.02]",
+                        ].join(" ")}
+                        style={{
+                          height:
+                            REQUEST_ROW_HEIGHT,
 
-                <StatusBadge
-                  status={request.status}
-                />
+                          gridTemplateColumns:
+                            "70px 55px minmax(160px,1fr) 55px 65px 45px",
 
-                <span
-                  className={cn(
-                    "font-mono text-[11px] tabular-nums",
-                    request.latency > 300
-                      ? "text-err"
-                      : request.latency > 150
-                        ? "text-warn"
-                        : "text-mid",
-                  )}
-                >
-                  {request.latency}ms
-                </span>
+                          transform:
+                            `translateY(${virtualRow.start -
+                            REQUEST_HEADER_HEIGHT
+                            }px)`,
+                        }}
+                      >
+                        <span className="font-mono text-[11px] text-lo tabular-nums">
+                          {
+                            request.time
+                          }
+                        </span>
 
-                <span className="text-[10px] font-medium text-lo">
-                  {request.region}
-                </span>
-              </div>
-            ),
-          )}
+                        <MethodBadge
+                          method={
+                            request.method
+                          }
+                        />
 
-          {filteredRequests.length === 0 && (
+                        <span
+                          title={
+                            request.endpoint
+                          }
+                          className="truncate font-mono text-[11px] text-mid"
+                        >
+                          {
+                            request.endpoint
+                          }
+                        </span>
+
+                        <StatusBadge
+                          status={
+                            request.status
+                          }
+                        />
+
+                        <span
+                          className={[
+                            "font-mono text-[11px] tabular-nums",
+
+                            request.latency >
+                              300
+                              ? "text-err"
+                              : request.latency >
+                                150
+                                ? "text-warn"
+                                : "text-mid",
+                          ].join(
+                            " ",
+                          )}
+                        >
+                          {
+                            request.latency
+                          }
+                          ms
+                        </span>
+
+                        <span className="text-[10px] font-medium text-lo">
+                          {
+                            request.region
+                          }
+                        </span>
+                      </div>
+                    );
+                  },
+                )}
+            </div>
+          ) : (
             <div className="flex h-40 items-center justify-center text-[13px] text-lo">
               No requests match filter
             </div>
