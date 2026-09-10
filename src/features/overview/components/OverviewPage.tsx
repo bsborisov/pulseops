@@ -1,37 +1,14 @@
-import {
-  useState,
-} from "react";
-
-import {
-  RealtimeChart,
-} from "@/components/charts/RealtimeChart";
+import { useState } from "react";
+import { RealtimeChart } from "@/components/charts/RealtimeChart";
 import { KPICard } from "@/components/ui/KPICard";
-
-import {
-  MOCK_CHART_DATA,
-  MOCK_ENDPOINTS,
-  MOCK_INCIDENTS,
-  MOCK_KPI,
-  MOCK_REQUESTS,
-  MOCK_SERVICES,
-} from "@/features/overview/data/overview.mock";
-
-import type {
-  TimeRange,
-} from "@/types/monitoring";
-
-import {
-  EndpointPerformance,
-} from "./EndpointPerformance";
-import {
-  LiveRequestStream,
-} from "./LiveRequestStream";
-import {
-  RecentIncidents,
-} from "./RecentIncidents";
-import {
-  SystemHealth,
-} from "./SystemHealth";
+import type { TimeRange } from "@/types/monitoring";
+import { useOverviewQuery } from "@/features/overview/queries/overview.queries";
+import { OverviewError } from "./OverviewError";
+import { OverviewSkeleton } from "./OverviewSkeleton";
+import { EndpointPerformance } from "./EndpointPerformance";
+import { LiveRequestStream } from "./LiveRequestStream";
+import { RecentIncidents } from "./RecentIncidents";
+import { SystemHealth } from "./SystemHealth";
 import { cn } from "@/lib/utils";
 
 const timeRanges: TimeRange[] = [
@@ -45,39 +22,73 @@ export function OverviewPage() {
   const [timeRange, setTimeRange] =
     useState<TimeRange>("1m");
 
+  const {
+    data,
+    error,
+    isPending,
+    isError,
+    isFetching,
+    refetch,
+  } = useOverviewQuery();
+
+  if (isPending) {
+    return <OverviewSkeleton />;
+  }
+
+  if (isError) {
+    return (
+      <OverviewError
+        error={error}
+        retrying={isFetching}
+        onRetry={() => {
+          void refetch();
+        }}
+      />
+    );
+  }
+
+  const {
+    kpi,
+    chart,
+    services,
+    requests,
+    endpoints,
+    incidents,
+  } = data;
+
   return (
     <div className="w-full space-y-5 p-4 sm:p-5">
       <section className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <KPICard
           label="Requests / sec"
-          value={MOCK_KPI.rps.toLocaleString()}
+          value={kpi.rps.toLocaleString()}
           delta={12.4}
           deltaLabel="+12.4%"
           sparkline={
-            MOCK_KPI.rpsSparkline
+            kpi.rpsSparkline
           }
           sparkColor="#0ea5e9"
         />
 
         <KPICard
           label="Active Users"
-          value={MOCK_KPI.activeUsers.toLocaleString()}
+          value={kpi.activeUsers.toLocaleString()}
           delta={8.1}
           deltaLabel="+8.1%"
           sparkline={
-            MOCK_KPI.usersSparkline
+            kpi.usersSparkline
           }
           sparkColor="#10b981"
         />
 
         <KPICard
           label="Error Rate"
-          value={`${MOCK_KPI.errorRate.toFixed(2)}%`}
+          value={`${kpi.errorRate.toFixed(2)}%`}
           delta={-0.08}
           deltaLabel="-0.08%"
           invertDelta
           sparkline={
-            MOCK_KPI.errorSparkline
+            kpi.errorSparkline
           }
           sparkColor="#ef4444"
         />
@@ -85,14 +96,14 @@ export function OverviewPage() {
         <KPICard
           label="Avg Latency"
           value={String(
-            MOCK_KPI.latency,
+            kpi.latency,
           )}
           unit="ms"
           delta={-14}
           deltaLabel="-14ms"
           invertDelta
           sparkline={
-            MOCK_KPI.latencySparkline
+            kpi.latencySparkline
           }
           sparkColor="#f59e0b"
         />
@@ -108,7 +119,7 @@ export function OverviewPage() {
 
               <div className="mt-0.5 text-[11px] text-lo">
                 <span className="font-mono text-accent tabular-nums">
-                  {MOCK_KPI.rps.toLocaleString()}
+                  {kpi.rps.toLocaleString()}
                 </span>
 
                 <span className="ml-1">
@@ -145,13 +156,13 @@ export function OverviewPage() {
           </div>
 
           <RealtimeChart
-            data={MOCK_CHART_DATA}
+            data={chart}
           />
         </div>
 
         <div className="xl:col-span-2">
           <SystemHealth
-            services={MOCK_SERVICES}
+            services={services}
           />
         </div>
       </section>
@@ -159,11 +170,11 @@ export function OverviewPage() {
       <section className="grid grid-cols-1 gap-3 xl:grid-cols-5">
         <div className="min-w-0 xl:col-span-3">
           <LiveRequestStream
-            initialRequests={
-              MOCK_REQUESTS
+            requests={
+              requests
             }
             eventsPerSecond={
-              MOCK_KPI.eventsPerSecond
+              kpi.eventsPerSecond
             }
           />
         </div>
@@ -171,14 +182,14 @@ export function OverviewPage() {
         <div className="xl:col-span-2">
           <EndpointPerformance
             endpoints={
-              MOCK_ENDPOINTS
+              endpoints
             }
           />
         </div>
       </section>
 
       <RecentIncidents
-        incidents={MOCK_INCIDENTS}
+        incidents={incidents}
       />
     </div>
   );

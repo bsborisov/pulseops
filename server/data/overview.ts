@@ -3,9 +3,11 @@ import type {
   EndpointStat,
   Incident,
   KPIData,
+  OverviewSnapshot,
   RequestEvent,
   ServiceHealth,
-} from "@/types/monitoring";
+} from "../../src/types/monitoring.ts";
+
 
 const BASE_TIMESTAMP =
   Date.parse("2026-09-10T08:40:00Z");
@@ -333,3 +335,14 @@ export const MOCK_INCIDENTS: Incident[] = [
     updatedAt: "2026-09-10T07:10:00Z",
   },
 ];
+
+export function getOverviewSnapshot(): OverviewSnapshot {
+  return {
+    kpi: MOCK_KPI,
+    chart: MOCK_CHART_DATA,
+    services: MOCK_SERVICES,
+    requests: MOCK_REQUESTS,
+    endpoints: MOCK_ENDPOINTS,
+    incidents: MOCK_INCIDENTS,
+  };
+}

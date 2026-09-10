@@ -14,41 +14,113 @@ import type {
 import { cn } from "@/lib/utils";
 
 interface LiveRequestStreamProps {
-  initialRequests: RequestEvent[];
+  requests: RequestEvent[];
   eventsPerSecond: number;
 }
 
 export function LiveRequestStream({
-  initialRequests,
+  requests,
   eventsPerSecond,
 }: LiveRequestStreamProps) {
-  const [requests, setRequests] =
-    useState(initialRequests);
+  const [
+    pausedRequests,
+    setPausedRequests,
+  ] = useState<RequestEvent[] | null>(
+    null,
+  );
 
-  const [paused, setPaused] =
-    useState(false);
+  const [
+    clearedThroughId,
+    setClearedThroughId,
+  ] = useState<string | null>(
+    null,
+  );
 
   const [filter, setFilter] =
     useState("");
 
-  const filteredRequests = useMemo(() => {
-    const value =
-      filter.trim().toLowerCase();
+  const paused =
+    pausedRequests !== null;
 
-    if (!value) {
-      return requests;
+  const liveRequests =
+    useMemo(() => {
+      if (!clearedThroughId) {
+        return requests;
+      }
+
+      const boundaryIndex =
+        requests.findIndex(
+          (request) =>
+            request.id ===
+            clearedThroughId,
+        );
+
+      if (boundaryIndex === -1) {
+        return requests;
+      }
+
+      return requests.slice(
+        0,
+        boundaryIndex,
+      );
+    }, [
+      requests,
+      clearedThroughId,
+    ]);
+
+  const displayRequests =
+    pausedRequests ??
+    liveRequests;
+
+  const filteredRequests =
+    useMemo(() => {
+      const value =
+        filter
+          .trim()
+          .toLowerCase();
+
+      if (!value) {
+        return displayRequests;
+      }
+
+      return displayRequests.filter(
+        (request) =>
+          request.endpoint
+            .toLowerCase()
+            .includes(value) ||
+          request.service
+            .toLowerCase()
+            .includes(value),
+      );
+    }, [
+      filter,
+      displayRequests,
+    ]);
+
+  function togglePause() {
+    if (paused) {
+      setPausedRequests(null);
+
+      return;
     }
 
-    return requests.filter(
-      (request) =>
-        request.endpoint
-          .toLowerCase()
-          .includes(value) ||
-        request.service
-          .toLowerCase()
-          .includes(value),
+    setPausedRequests(
+      liveRequests,
     );
-  }, [filter, requests]);
+  }
+
+  function clearRequests() {
+    const newestRequest =
+      requests[0];
+
+    setClearedThroughId(
+      newestRequest?.id ?? null,
+    );
+
+    if (paused) {
+      setPausedRequests([]);
+    }
+  }
 
   return (
     <section className="flex h-[360px] min-w-0 flex-col overflow-hidden rounded-lg border border-edge bg-surface">
@@ -88,9 +160,7 @@ export function LiveRequestStream({
 
         <button
           type="button"
-          onClick={() =>
-            setPaused((current) => !current)
-          }
+          onClick={togglePause}
           className={cn(
             "rounded border px-2 py-1 text-[11px] font-medium transition-colors",
             paused
@@ -103,9 +173,7 @@ export function LiveRequestStream({
 
         <button
           type="button"
-          onClick={() =>
-            setRequests([])
-          }
+          onClick={clearRequests}
           className="rounded border border-edge px-2 py-1 text-[11px] font-medium text-lo transition-colors hover:text-mid"
         >
           Clear

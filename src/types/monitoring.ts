@@ -94,3 +94,12 @@ export interface Incident {
   severity: IncidentSeverity;
   updatedAt: string;
 }
+
+export interface OverviewSnapshot {
+  kpi: KPIData;
+  chart: ChartPoint[];
+  services: ServiceHealth[];
+  requests: RequestEvent[];
+  endpoints: EndpointStat[];
+  incidents: Incident[];
+}
