@@ -49,8 +49,8 @@ function SidebarNavigationItem({
           "group relative flex items-center gap-3 rounded-md border px-3 py-2",
           "text-[13px] font-medium transition-colors",
           isActive
-            ? "border-white/[0.07] bg-white/6 text-hi"
-            : "border-transparent text-lo hover:bg-white/3 hover:text-mid",
+            ? "border-edge/[0.07] bg-accent/6 text-hi"
+            : "border-transparent text-lo hover:bg-slate-900/3 hover:text-mid",
         )
       }
     >
@@ -96,6 +96,7 @@ export function Sidebar({
     <aside
       className={cn(
         "relative shrink-0 flex-col border-r border-edge bg-surface",
+        "shadow-[1px_0_0_rgba(15,23,42,0.015)]",
         "transition-[width] duration-200",
         collapsed ? "w-14" : "w-56",
         className,
@@ -140,7 +141,7 @@ export function Sidebar({
           type="button"
           className={cn(
             "mt-1 flex items-center gap-2.5 rounded-md px-3 py-2",
-            "text-left transition-colors hover:bg-white/3",
+            "text-left transition-colors hover:bg-slate-900/3",
             collapsed ? "justify-center" : "",
           )}
         >

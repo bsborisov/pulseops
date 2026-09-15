@@ -40,12 +40,12 @@ export function Topbar({
   } = useDashboardSearchParams();
 
   return (
-    <header className="flex h-12 shrink-0 items-center gap-3 border-b border-edge bg-surface/50 px-3 backdrop-blur-sm sm:px-4">
+    <header className="flex h-12 shrink-0 items-center gap-3 border-b border-edge bg-surface/90 px-3 backdrop-blur-sm sm:px-4">
       <button
         type="button"
         onClick={onOpenMobileNavigation}
         aria-label="Open navigation"
-        className="flex size-8 items-center justify-center rounded-md text-lo transition-colors hover:bg-white/[0.04] hover:text-mid md:hidden"
+        className="flex size-8 items-center justify-center rounded-md text-lo transition-colors hover:bg-slate-900/4 hover:text-mid md:hidden"
       >
         <Menu size={17} />
       </button>
@@ -128,7 +128,7 @@ export function Topbar({
       <button
         type="button"
         aria-label="Notifications"
-        className="relative flex size-8 items-center justify-center rounded-md text-lo transition-colors hover:bg-white/[0.04] hover:text-mid"
+        className="relative flex size-8 items-center justify-center rounded-md text-lo transition-colors hover:bg-slate-900/4 hover:text-mid"
       >
         <Bell
           size={15}

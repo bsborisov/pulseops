@@ -62,7 +62,7 @@ export function SystemHealth({
               className={cn(
                 "flex w-full items-center gap-3 border-b border-edge",
                 "px-1 py-2 text-left transition-colors last:border-0",
-                "hover:bg-white/2",
+                "hover:bg-slate-900/2",
               )}
             >
               <span

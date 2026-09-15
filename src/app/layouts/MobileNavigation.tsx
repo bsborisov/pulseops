@@ -42,8 +42,8 @@ function MobileNavigationItem({
           "flex items-center gap-3 rounded-md border px-3 py-2.5",
           "text-[13px] font-medium transition-colors",
           isActive
-            ? "border-white/[0.07] bg-white/6 text-hi"
-            : "border-transparent text-lo hover:bg-white/3 hover:text-mid",
+            ? "border-white/[0.07] bg-accent/6 text-hi"
+            : "border-transparent text-lo hover:bg-slate-900/3 hover:text-mid",
         )
       }
     >
@@ -110,7 +110,7 @@ export function MobileNavigation({
             type="button"
             onClick={onClose}
             aria-label="Close navigation"
-            className="ml-auto flex size-8 items-center justify-center rounded-md text-lo transition-colors hover:bg-white/4 hover:text-mid"
+            className="ml-auto flex size-8 items-center justify-center rounded-md text-lo transition-colors hover:bg-slate-900/4 hover:text-mid"
           >
             <X size={17} />
           </button>

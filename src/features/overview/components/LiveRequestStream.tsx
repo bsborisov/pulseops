@@ -164,7 +164,7 @@ export function LiveRequestStream({
   }
 
   return (
-    <section className="flex h-[360px] min-w-0 flex-col overflow-hidden rounded-lg border border-edge bg-surface">
+    <section className="flex h-90 min-w-0 flex-col overflow-hidden rounded-lg border border-edge bg-surface">
       <div className="flex shrink-0 flex-wrap items-center gap-2 border-b border-edge px-4 py-3">
         <h2 className="mr-auto text-[13px] font-semibold text-hi">
           Live Request Stream
@@ -231,7 +231,7 @@ export function LiveRequestStream({
         ref={scrollContainerRef}
         className="flex-1 overflow-auto"
       >
-        <div className="min-w-[650px]">
+        <div className="min-w-162.5">
           <div
             className={[
               "sticky top-0 z-10 grid h-7 items-center gap-2",
@@ -293,7 +293,7 @@ export function LiveRequestStream({
                         className={[
                           "absolute left-0 top-0 grid w-full items-center gap-2",
                           "border-b border-edge/50 px-4",
-                          "transition-colors hover:bg-white/[0.02]",
+                          "transition-colors hover:bg-slate-900/2",
                         ].join(" ")}
                         style={{
                           height:
