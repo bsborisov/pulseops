@@ -3,13 +3,17 @@ import {
   Menu,
   Search,
 } from "lucide-react";
-import { useState } from "react";
 
 import { ConnectionIndicator } from "@/components/ui/ConnectionIndicator";
 import { cn } from "@/lib/utils";
-import type {
-  ConnectionState,
-} from "@/types/realtime";
+import type { ConnectionState } from "@/types/realtime";
+import {
+  ENVIRONMENTS,
+  isEnvironment,
+  TIME_RANGES,
+} from "@/app/dashboard-filters";
+
+import { useDashboardSearchParams } from "@/hooks/useDashboardSearchParams";
 
 interface TopbarProps {
   title: string;
@@ -18,36 +22,22 @@ interface TopbarProps {
   () => void;
 }
 
-export type Environment =
-  | "production"
-  | "staging"
-  | "development";
-
-export type TimeRange =
-  | "1m"
-  | "5m"
-  | "15m"
-  | "1h";
-
 interface TopbarProps {
   title: string;
   onOpenMobileNavigation: () => void;
 }
-
-const timeRanges: TimeRange[] = [
-  "1m",
-  "5m",
-  "15m",
-  "1h",
-];
 
 export function Topbar({
   title,
   connectionState,
   onOpenMobileNavigation,
 }: TopbarProps) {
-  const [timeRange, setTimeRange] = useState<TimeRange>("5m");
-  const [environment, setEnvironment] = useState<Environment>("production");
+  const {
+    timeRange,
+    setTimeRange,
+    environment,
+    setEnvironment,
+  } = useDashboardSearchParams();
 
   return (
     <header className="flex h-12 shrink-0 items-center gap-3 border-b border-edge bg-surface/50 px-3 backdrop-blur-sm sm:px-4">
@@ -65,7 +55,7 @@ export function Topbar({
       </h1>
 
       <div className="hidden items-center gap-0.5 rounded-md border border-edge bg-bg p-0.5 lg:flex">
-        {timeRanges.map((range) => (
+        {TIME_RANGES.map((range) => (
           <button
             key={range}
             type="button"
@@ -86,30 +76,35 @@ export function Topbar({
 
       <select
         value={environment}
-        onChange={(event) =>
-          setEnvironment(
-            event.target
-              .value as Environment,
-          )
-        }
+        onChange={(event) => {
+          const value = event.target.value;
+
+          if (
+            isEnvironment(value)
+          ) {
+            setEnvironment(value);
+          }
+        }}
         aria-label="Environment"
-        className={cn(
+        className={[
           "hidden rounded-md border border-edge bg-bg px-3 py-1.5",
           "text-xs font-medium text-hi outline-none transition-colors",
           "hover:border-mid/40 md:block",
-        )}
+        ].join(" ")}
       >
-        <option value="production">
-          Production
-        </option>
-
-        <option value="staging">
-          Staging
-        </option>
-
-        <option value="development">
-          Development
-        </option>
+        {ENVIRONMENTS.map(
+          (value) => (
+            <option
+              key={value}
+              value={value}
+            >
+              {value
+                .charAt(0)
+                .toUpperCase() +
+                value.slice(1)}
+            </option>
+          ),
+        )}
       </select>
 
       <button

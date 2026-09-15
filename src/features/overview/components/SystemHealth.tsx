@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useDashboardNavigate } from "@/hooks/useDashboardNavigate";
 
 import type {
   ServiceHealth,
@@ -12,7 +12,7 @@ interface SystemHealthProps {
 export function SystemHealth({
   services,
 }: SystemHealthProps) {
-  const navigate = useNavigate();
+  const navigate = useDashboardNavigate();
 
   return (
     <section className="rounded-lg border border-edge bg-surface p-4">
@@ -62,7 +62,7 @@ export function SystemHealth({
               className={cn(
                 "flex w-full items-center gap-3 border-b border-edge",
                 "px-1 py-2 text-left transition-colors last:border-0",
-                "hover:bg-white/[0.02]",
+                "hover:bg-white/2",
               )}
             >
               <span

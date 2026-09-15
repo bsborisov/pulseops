@@ -34,6 +34,11 @@ export type TimeRange =
   | "15m"
   | "1h";
 
+export type Environment =
+  | "production"
+  | "staging"
+  | "development";
+
 export interface ChartPoint {
   timestamp: number;
   label: string;

@@ -1,28 +1,18 @@
-import { useState } from "react";
-import type { TimeRange } from "@shared/monitoring";
-
-import {
-  RealtimeChart,
-} from "@/components/charts/RealtimeChart";
+import { RealtimeChart } from "@/components/charts/RealtimeChart";
+import { TIME_RANGES } from "@/app/dashboard-filters";
+import { useDashboardSearchParams } from "@/hooks/useDashboardSearchParams";
 
 import {
   useOverviewChartQuery,
   useOverviewKpiQuery,
 } from "@/features/overview/queries/overview.queries";
 
-const timeRanges: TimeRange[] = [
-  "1m",
-  "5m",
-  "15m",
-  "1h",
-];
 
 export function RealtimeTrafficPanel() {
-  const [
+  const {
     timeRange,
     setTimeRange,
-  ] =
-    useState<TimeRange>("1m");
+  } = useDashboardSearchParams();
 
   const {
     data: chart,
@@ -56,7 +46,7 @@ export function RealtimeTrafficPanel() {
         </div>
 
         <div className="flex items-center gap-1">
-          {timeRanges.map(
+          {TIME_RANGES.map(
             (range) => (
               <button
                 key={range}

@@ -1,6 +1,7 @@
 import { X } from "lucide-react";
 import {
   NavLink,
+  useLocation
 } from "react-router";
 
 import {
@@ -17,18 +18,23 @@ interface MobileNavigationProps {
 
 interface MobileNavigationItemProps {
   item: NavigationItem;
+  search: string;
   onClose: () => void;
 }
 
 function MobileNavigationItem({
   item,
+  search,
   onClose,
 }: MobileNavigationItemProps) {
   const Icon = item.icon;
 
   return (
     <NavLink
-      to={item.path}
+      to={{
+        pathname: item.path,
+        search,
+      }}
       end={item.path === "/"}
       onClick={onClose}
       className={({ isActive }) =>
@@ -36,8 +42,8 @@ function MobileNavigationItem({
           "flex items-center gap-3 rounded-md border px-3 py-2.5",
           "text-[13px] font-medium transition-colors",
           isActive
-            ? "border-white/[0.07] bg-white/[0.06] text-hi"
-            : "border-transparent text-lo hover:bg-white/[0.03] hover:text-mid",
+            ? "border-white/[0.07] bg-white/6 text-hi"
+            : "border-transparent text-lo hover:bg-white/3 hover:text-mid",
         )
       }
     >
@@ -68,6 +74,8 @@ export function MobileNavigation({
   open,
   onClose,
 }: MobileNavigationProps) {
+  const { search } = useLocation();
+
   if (!open) {
     return null;
   }
@@ -85,7 +93,7 @@ export function MobileNavigation({
         role="dialog"
         aria-modal="true"
         aria-label="Navigation"
-        className="relative flex h-full w-[280px] max-w-[85vw] flex-col border-r border-edge bg-surface shadow-2xl"
+        className="relative flex h-full w-70 max-w-[85vw] flex-col border-r border-edge bg-surface shadow-2xl"
       >
         <div className="flex h-12 items-center gap-2.5 border-b border-edge px-3">
           <div className="flex size-6 items-center justify-center rounded-md border border-accent/30 bg-accent/20">
@@ -102,7 +110,7 @@ export function MobileNavigation({
             type="button"
             onClick={onClose}
             aria-label="Close navigation"
-            className="ml-auto flex size-8 items-center justify-center rounded-md text-lo transition-colors hover:bg-white/[0.04] hover:text-mid"
+            className="ml-auto flex size-8 items-center justify-center rounded-md text-lo transition-colors hover:bg-white/4 hover:text-mid"
           >
             <X size={17} />
           </button>
@@ -113,6 +121,7 @@ export function MobileNavigation({
             <MobileNavigationItem
               key={item.path}
               item={item}
+              search={search}
               onClose={onClose}
             />
           ))}
@@ -124,13 +133,14 @@ export function MobileNavigation({
               <MobileNavigationItem
                 key={item.path}
                 item={item}
+                search={search}
                 onClose={onClose}
               />
             ),
           )}
 
           <div className="mt-2 flex items-center gap-2.5 border-t border-edge px-3 pt-3">
-            <div className="flex size-7 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-blue-600">
+            <div className="flex size-7 items-center justify-center rounded-full bg-linear-to-br from-sky-400 to-blue-600">
               <span className="text-[10px] font-bold text-white">
                 JD
               </span>

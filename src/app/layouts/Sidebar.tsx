@@ -2,7 +2,10 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import { NavLink } from "react-router";
+import {
+  NavLink,
+  useLocation,
+} from "react-router";
 
 import {
   mainNavigation,
@@ -23,17 +26,22 @@ interface SidebarProps {
 interface SidebarNavigationItemProps {
   item: NavigationItem;
   collapsed: boolean;
+  search: string;
 }
 
 function SidebarNavigationItem({
   item,
   collapsed,
+  search
 }: SidebarNavigationItemProps) {
   const Icon = item.icon;
 
   return (
     <NavLink
-      to={item.path}
+      to={{
+        pathname: item.path,
+        search,
+      }}
       end={item.path === "/"}
       title={collapsed ? item.label : undefined}
       className={({ isActive }) =>
@@ -41,8 +49,8 @@ function SidebarNavigationItem({
           "group relative flex items-center gap-3 rounded-md border px-3 py-2",
           "text-[13px] font-medium transition-colors",
           isActive
-            ? "border-white/[0.07] bg-white/[0.06] text-hi"
-            : "border-transparent text-lo hover:bg-white/[0.03] hover:text-mid",
+            ? "border-white/[0.07] bg-white/6 text-hi"
+            : "border-transparent text-lo hover:bg-white/3 hover:text-mid",
         )
       }
     >
@@ -82,6 +90,8 @@ export function Sidebar({
   showCollapseButton = true,
   className = "",
 }: SidebarProps) {
+  const { search } = useLocation();
+
   return (
     <aside
       className={cn(
@@ -111,6 +121,7 @@ export function Sidebar({
             key={item.path}
             item={item}
             collapsed={collapsed}
+            search={search}
           />
         ))}
       </nav>
@@ -121,6 +132,7 @@ export function Sidebar({
             key={item.path}
             item={item}
             collapsed={collapsed}
+            search={search}
           />
         ))}
 
@@ -128,11 +140,11 @@ export function Sidebar({
           type="button"
           className={cn(
             "mt-1 flex items-center gap-2.5 rounded-md px-3 py-2",
-            "text-left transition-colors hover:bg-white/[0.03]",
+            "text-left transition-colors hover:bg-white/3",
             collapsed ? "justify-center" : "",
           )}
         >
-          <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-sky-400 to-blue-600">
+          <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-sky-400 to-blue-600">
             <span className="text-[10px] font-bold text-white">
               JD
             </span>
