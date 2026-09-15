@@ -42,7 +42,7 @@ function MobileNavigationItem({
           "flex items-center gap-3 rounded-md border px-3 py-2.5",
           "text-[13px] font-medium transition-colors",
           isActive
-            ? "border-white/[0.07] bg-accent/6 text-hi"
+            ? "border-edge/[0.07] bg-accent/6 text-hi"
             : "border-transparent text-lo hover:bg-slate-900/3 hover:text-mid",
         )
       }
