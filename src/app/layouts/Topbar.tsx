@@ -22,11 +22,6 @@ interface TopbarProps {
   () => void;
 }
 
-interface TopbarProps {
-  title: string;
-  onOpenMobileNavigation: () => void;
-}
-
 export function Topbar({
   title,
   connectionState,

@@ -36,25 +36,25 @@ It combines an initial REST snapshot with continuous WebSocket events, synchroni
 
 ### Live Traffic
 
-![PulseOps Overview](docs/screenshots/traffic.png)
+![PulseOps Live Traffic](docs/screenshots/traffic.png)
 
 ### Request Explorer
 
-![PulseOps Overview](docs/screenshots/requests.png)
+![PulseOps Request Explorer](docs/screenshots/requests.png)
 
 ### Service Detail
 
-![PulseOps Overview](docs/screenshots/service-detail.png)
+![PulseOps Service Detail](docs/screenshots/service-detail.png)
 
 ### Incidents
 
-![PulseOps Overview](docs/screenshots/incidents.png)
+![PulseOps Incidents](docs/screenshots/incidents.png)
 
 ---
 
 ## Architecture
 
-PulseOps separates initial/historical data retrieval from realtime updates.
+PulseOps separates initial snapshot retrieval from realtime updates.
 
 ```mermaid
 flowchart LR
@@ -589,8 +589,6 @@ pulseops/
 | `/requests`     | Virtualized realtime request explorer |
 | `/incidents`    | Incident management                   |
 | `/analytics`    | Operational analytics                 |
-| `/docs`         | Documentation placeholder             |
-| `/settings`     | Settings placeholder                  |
 
 ---
 

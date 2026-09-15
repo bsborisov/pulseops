@@ -6,7 +6,7 @@ import {
 
 import {
   mainNavigation,
-  secondaryNavigation,
+  //secondaryNavigation,
   type NavigationItem,
 } from "@/app/navigation";
 import { cn } from "@/lib/utils";
@@ -128,7 +128,7 @@ export function MobileNavigation({
         </nav>
 
         <div className="border-t border-edge p-2">
-          {secondaryNavigation.map(
+          {/* {secondaryNavigation.map(
             (item) => (
               <MobileNavigationItem
                 key={item.path}
@@ -137,7 +137,7 @@ export function MobileNavigation({
                 onClose={onClose}
               />
             ),
-          )}
+          )} */}
 
           <div className="mt-2 flex items-center gap-2.5 border-t border-edge px-3 pt-3">
             <div className="flex size-7 items-center justify-center rounded-full bg-linear-to-br from-sky-400 to-blue-600">

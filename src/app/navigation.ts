@@ -1,11 +1,11 @@
 import {
   Activity,
   BarChart3,
-  BookOpen,
+  //BookOpen,
   Gauge,
   Network,
   Server,
-  Settings,
+  //Settings,
   TriangleAlert,
   type LucideIcon,
 } from "lucide-react";
@@ -49,22 +49,22 @@ export const mainNavigation: NavigationItem[] = [
   },
 ];
 
-export const secondaryNavigation: NavigationItem[] = [
-  {
-    label: "Documentation",
-    path: "/docs",
-    icon: BookOpen,
-  },
-  {
-    label: "Settings",
-    path: "/settings",
-    icon: Settings,
-  },
-];
+// export const secondaryNavigation: NavigationItem[] = [
+//   {
+//     label: "Documentation",
+//     path: "/docs",
+//     icon: BookOpen,
+//   },
+//   {
+//     label: "Settings",
+//     path: "/settings",
+//     icon: Settings,
+//   },
+// ];
 
 export const navigation = [
   ...mainNavigation,
-  ...secondaryNavigation,
+  //...secondaryNavigation,
 ];
 
 export function getPageTitle(

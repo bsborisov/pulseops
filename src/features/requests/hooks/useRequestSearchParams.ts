@@ -1,4 +1,7 @@
-import { useCallback } from "react";
+import {
+  useCallback,
+  useMemo,
+} from "react";
 import { useSearchParams } from "react-router";
 
 import {
@@ -22,6 +25,9 @@ export function useRequestSearchParams() {
     setSearchParams,
   ] = useSearchParams();
 
+  const search =
+    searchParams.get("q") ?? "";
+
   const methodParam =
     searchParams.get("method");
 
@@ -31,31 +37,42 @@ export function useRequestSearchParams() {
   const regionParam =
     searchParams.get("region");
 
-  const filters: RequestFilters = {
-    search:
-      searchParams.get("q") ??
-      "",
+  const service =
+    searchParams.get("service") ??
+    "all";
 
-    method:
-      isHttpMethod(methodParam)
-        ? methodParam
-        : "all",
+  const filters =
+    useMemo<RequestFilters>(
+      () => ({
+        search,
 
-    status:
-      isStatusFilter(statusParam)
-        ? statusParam
-        : "all",
+        method:
+          isHttpMethod(methodParam)
+            ? methodParam
+            : "all",
 
-    region:
-      isRegion(regionParam)
-        ? regionParam
-        : "all",
+        status:
+          isStatusFilter(
+            statusParam,
+          )
+            ? statusParam
+            : "all",
 
-    service:
-      searchParams.get(
-        "service",
-      ) ?? "all",
-  };
+        region:
+          isRegion(regionParam)
+            ? regionParam
+            : "all",
+
+        service,
+      }),
+      [
+        search,
+        methodParam,
+        statusParam,
+        regionParam,
+        service,
+      ],
+    );
 
   const selectedRequestId =
     searchParams.get("request");
@@ -131,66 +148,104 @@ export function useRequestSearchParams() {
       setSearchParams,
     ]);
 
+  const setSearch =
+    useCallback(
+      (value: string) => {
+        updateParam(
+          "q",
+          value,
+          {
+            replace: true,
+          },
+        );
+      },
+      [
+        updateParam,
+      ],
+    );
+
+  const setMethod =
+    useCallback(
+      (value: string) => {
+        updateParam(
+          "method",
+          value,
+        );
+      },
+      [
+        updateParam,
+      ],
+    );
+
+  const setStatus =
+    useCallback(
+      (value: string) => {
+        updateParam(
+          "status",
+          value,
+        );
+      },
+      [
+        updateParam,
+      ],
+    );
+
+  const setRegion =
+    useCallback(
+      (value: string) => {
+        updateParam(
+          "region",
+          value,
+        );
+      },
+      [
+        updateParam,
+      ],
+    );
+
+  const setService =
+    useCallback(
+      (value: string) => {
+        updateParam(
+          "service",
+          value,
+        );
+      },
+      [
+        updateParam,
+      ],
+    );
+
+  const setSelectedRequestId =
+    useCallback(
+      (
+        value:
+          | string
+          | null,
+      ) => {
+        updateParam(
+          "request",
+          value,
+          {
+            replace: true,
+          },
+        );
+      },
+      [
+        updateParam,
+      ],
+    );
+
   return {
     filters,
-
     selectedRequestId,
 
-    setSearch: (
-      value: string,
-    ) =>
-      updateParam(
-        "q",
-        value,
-        {
-          // Do not create one history entry
-          // per typed character.
-          replace: true,
-        },
-      ),
-
-    setMethod: (
-      value: string,
-    ) =>
-      updateParam(
-        "method",
-        value,
-      ),
-
-    setStatus: (
-      value: string,
-    ) =>
-      updateParam(
-        "status",
-        value,
-      ),
-
-    setRegion: (
-      value: string,
-    ) =>
-      updateParam(
-        "region",
-        value,
-      ),
-
-    setService: (
-      value: string,
-    ) =>
-      updateParam(
-        "service",
-        value,
-      ),
-
-    setSelectedRequestId: (
-      value: string | null,
-    ) =>
-      updateParam(
-        "request",
-        value,
-        {
-          replace: true,
-        },
-      ),
+    setSearch,
+    setMethod,
+    setStatus,
+    setRegion,
+    setService,
+    setSelectedRequestId,
 
     clearFilters,
   };

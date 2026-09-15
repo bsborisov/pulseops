@@ -9,7 +9,7 @@ import {
 
 import {
   mainNavigation,
-  secondaryNavigation,
+  //secondaryNavigation,
   type NavigationItem,
 } from "@/app/navigation";
 import { cn } from "@/lib/utils";
@@ -128,14 +128,14 @@ export function Sidebar({
       </nav>
 
       <div className="flex flex-col gap-0.5 border-t border-edge p-2">
-        {secondaryNavigation.map((item) => (
+        {/* {secondaryNavigation.map((item) => (
           <SidebarNavigationItem
             key={item.path}
             item={item}
             collapsed={collapsed}
             search={search}
           />
-        ))}
+        ))} */}
 
         <button
           type="button"
