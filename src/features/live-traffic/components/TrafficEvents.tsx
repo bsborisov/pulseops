@@ -5,16 +5,14 @@ import {
 
 import { LiveRequestStream } from "@/features/requests/components/LiveRequestStream";
 
-export function OverviewRequestStream() {
+export function TrafficEvents() {
   const {
     data: requests,
-  } =
-    useOverviewRequestsQuery();
+  } = useOverviewRequestsQuery();
 
   const {
     data: kpi,
-  } =
-    useOverviewKpiQuery();
+  } = useOverviewKpiQuery();
 
   if (!requests || !kpi) {
     return null;

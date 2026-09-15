@@ -9,7 +9,7 @@ interface OverviewErrorProps {
   onRetry: () => void;
 }
 
-export function OverviewError({
+export function MonitoringPageError({
   error,
   retrying,
   onRetry,

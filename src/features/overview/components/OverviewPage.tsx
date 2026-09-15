@@ -1,10 +1,10 @@
 import { useOverviewQuery } from "@/features/overview/queries/overview.queries";
 import { OverviewEndpointPerformance } from "./OverviewEndpointPerformance";
-import { OverviewError } from "./OverviewError";
+import { MonitoringPageError } from "@/components/monitoring/MonitoringPageError";
 import { OverviewKpiGrid } from "./OverviewKpiGrid";
 import { OverviewRecentIncidents } from "./OverviewRecentIncidents";
 import { OverviewRequestStream } from "./OverviewRequestStream";
-import { OverviewSkeleton } from "./OverviewSkeleton";
+import { MonitoringPageSkeleton } from "@/components/monitoring/MonitoringPageSkeleton";
 import { OverviewSystemHealth } from "./OverviewSystemHealth";
 import { RealtimeTrafficPanel } from "./RealtimeTrafficPanel";
 
@@ -19,13 +19,13 @@ export function OverviewPage() {
 
   if (isPending) {
     return (
-      <OverviewSkeleton />
+      <MonitoringPageSkeleton />
     );
   }
 
   if (isError) {
     return (
-      <OverviewError
+      <MonitoringPageError
         error={error}
         retrying={isFetching}
         onRetry={() => {
