@@ -108,3 +108,18 @@ export interface OverviewSnapshot {
   endpoints: EndpointStat[];
   incidents: Incident[];
 }
+
+export interface ServiceDetail
+  extends ServiceHealth {
+  description: string;
+  version: string;
+  instances: number;
+  errorRate: number;
+  p95: number;
+  region: string;
+  lastDeployedAt: string;
+  dependencies: string[];
+  requestServices: string[];
+  endpoints: EndpointStat[];
+  chart: ChartPoint[];
+}

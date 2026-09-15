@@ -5,6 +5,7 @@ import {
 } from "node:http";
 
 import { getOverviewSnapshot } from "./data/overview.ts";
+import { getServiceDetail } from "./data/services.ts";
 import { createRealtimeServer } from "./realtime/websocket.ts";
 import { startMonitoringSimulator } from "./realtime/simulator.ts";
 
@@ -59,6 +60,46 @@ function handleRequest(
       response,
       200,
       snapshot,
+    );
+
+    return;
+  }
+
+  if (
+    request.method === "GET" &&
+    url.pathname.startsWith(
+      "/api/services/",
+    )
+  ) {
+    const serviceId =
+      decodeURIComponent(
+        url.pathname.slice(
+          "/api/services/".length,
+        ),
+      );
+
+    const service =
+      getServiceDetail(
+        serviceId,
+      );
+
+    if (!service) {
+      sendJson(
+        response,
+        404,
+        {
+          error:
+            "Service not found",
+        },
+      );
+
+      return;
+    }
+
+    sendJson(
+      response,
+      200,
+      service,
     );
 
     return;

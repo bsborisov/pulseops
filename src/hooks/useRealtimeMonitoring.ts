@@ -4,17 +4,17 @@ import {
 } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
-import type { OverviewSnapshot } from "@shared/monitoring";
+import type {
+  OverviewSnapshot,
+  ServiceDetail
+} from "@shared/monitoring";
+
 import type { RealtimeEvent } from "@shared/realtime";
 import type { ConnectionState } from "@/types/realtime";
 
-import {
-  overviewKeys,
-} from "@/features/overview/queries/overview.queries";
-
-import {
-  applyOverviewEvent,
-} from "@/features/overview/realtime/applyOverviewEvent";
+import { overviewKeys } from "@/features/overview/queries/overview.queries";
+import { applyOverviewEvent } from "@/features/overview/realtime/applyOverviewEvent";
+import { serviceKeys } from "@/features/services/queries/service.queries";
 
 const realtimeEventTypes =
   new Set<RealtimeEvent["type"]>([
@@ -135,6 +135,24 @@ export function useRealtimeMonitoring() {
                 );
               },
             );
+
+            if (parsed.type === "service.updated") {
+              queryClient.setQueryData<ServiceDetail>(
+                serviceKeys.detail(
+                  parsed.payload.id,
+                ),
+                (current) => {
+                  if (!current) {
+                    return current;
+                  }
+
+                  return {
+                    ...current,
+                    ...parsed.payload,
+                  };
+                },
+              );
+            }
           } catch {
             console.warn(
               "Invalid realtime message received",
