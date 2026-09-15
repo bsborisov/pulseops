@@ -91,30 +91,6 @@ export const router = createBrowserRouter([
         },
       },
 
-      // {
-      //   path: "docs",
-      //   lazy: {
-      //     Component: async () =>
-      //       (
-      //         await import(
-      //           "@/features/documentation/components/DocumentationPage"
-      //         )
-      //       ).DocumentationPage,
-      //   },
-      // },
-
-      // {
-      //   path: "settings",
-      //   lazy: {
-      //     Component: async () =>
-      //       (
-      //         await import(
-      //           "@/features/settings/components/SettingsPage"
-      //         )
-      //       ).SettingsPage,
-      //   },
-      // },
-
       {
         path: "*",
         lazy: {

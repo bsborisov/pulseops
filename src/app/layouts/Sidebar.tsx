@@ -9,7 +9,6 @@ import {
 
 import {
   mainNavigation,
-  //secondaryNavigation,
   type NavigationItem,
 } from "@/app/navigation";
 import { cn } from "@/lib/utils";
@@ -126,44 +125,6 @@ export function Sidebar({
           />
         ))}
       </nav>
-
-      <div className="flex flex-col gap-0.5 border-t border-edge p-2">
-        {/* {secondaryNavigation.map((item) => (
-          <SidebarNavigationItem
-            key={item.path}
-            item={item}
-            collapsed={collapsed}
-            search={search}
-          />
-        ))} */}
-
-        <button
-          type="button"
-          className={cn(
-            "mt-1 flex items-center gap-2.5 rounded-md px-3 py-2",
-            "text-left transition-colors hover:bg-slate-900/3",
-            collapsed ? "justify-center" : "",
-          )}
-        >
-          <div className="flex size-6 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-sky-400 to-blue-600">
-            <span className="text-[10px] font-bold text-white">
-              JD
-            </span>
-          </div>
-
-          {!collapsed && (
-            <div className="min-w-0">
-              <div className="truncate text-xs font-medium text-hi">
-                Jamie D.
-              </div>
-
-              <div className="truncate text-[10px] text-lo">
-                Admin
-              </div>
-            </div>
-          )}
-        </button>
-      </div>
 
       {showCollapseButton &&
         onCollapsedChange && (

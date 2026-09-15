@@ -1,7 +1,5 @@
 import {
-  //Bell,
   Menu,
-  //Search,
 } from "lucide-react";
 
 import { ConnectionIndicator } from "@/components/ui/ConnectionIndicator";
@@ -101,37 +99,6 @@ export function Topbar({
           ),
         )}
       </select>
-
-      {/* <button
-        type="button"
-        aria-label="Search"
-        className={cn(
-          "hidden items-center gap-2 rounded-md border border-edge bg-bg",
-          "px-3 py-1.5 text-xs text-lo transition-colors",
-          "hover:border-mid/40 hover:text-mid xl:flex",
-        )}
-      >
-        <Search size={12} />
-
-        <span>Search</span>
-
-        <kbd className="ml-1 font-mono text-[10px] text-lo/60">
-          ⌘K
-        </kbd>
-      </button>
-
-      <button
-        type="button"
-        aria-label="Notifications"
-        className="relative flex size-8 items-center justify-center rounded-md text-lo transition-colors hover:bg-slate-900/4 hover:text-mid"
-      >
-        <Bell
-          size={15}
-          strokeWidth={1.75}
-        />
-
-        <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-err" />
-      </button> */}
 
       <div className="border-l border-edge pl-3">
         <ConnectionIndicator
