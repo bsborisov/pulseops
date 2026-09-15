@@ -10,6 +10,7 @@ import {
 } from "@/features/overview/queries/overview.queries";
 
 import { IncidentItem } from "./IncidentItem";
+import { cn } from "@/lib/utils";
 
 export function IncidentsPage() {
   const {
@@ -238,10 +239,10 @@ function Stat({
       </div>
 
       <div
-        className={[
+        className={cn(
           "mt-2 font-mono text-2xl font-semibold tabular-nums",
           valueClass,
-        ].join(" ")}
+        )}
       >
         {value}
       </div>
