@@ -66,7 +66,10 @@ export function IncidentItem({
   }
 
   return (
-    <article className="rounded-lg border border-edge bg-surface p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
+    <article
+      data-incident-id={incident.id}
+      className="rounded-lg border border-edge bg-surface p-4 shadow-[0_1px_2px_rgba(15,23,42,0.04)]"
+    >
       <div className="flex flex-col gap-4 md:flex-row md:items-start">
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-center gap-2">

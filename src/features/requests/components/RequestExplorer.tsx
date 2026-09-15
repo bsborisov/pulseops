@@ -149,7 +149,10 @@ export function RequestExplorer() {
       <div className="flex flex-wrap items-center gap-x-5 gap-y-2 px-1 text-[11px] text-lo">
         <span>
           Showing{" "}
-          <strong className="font-mono font-medium text-hi tabular-nums">
+          <strong
+            data-testid="request-result-count"
+            className="font-mono font-medium text-hi tabular-nums"
+          >
             {
               filteredRequests.length
             }

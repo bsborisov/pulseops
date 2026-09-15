@@ -92,6 +92,7 @@ export function RequestTable({
 
       <div
         ref={scrollRef}
+        data-testid="request-scroll-container"
         className={cn(
           "h-[calc(100vh-285px)] min-h-105",
           "overflow-auto",
@@ -109,119 +110,114 @@ export function RequestTable({
             >
               {virtualizer
                 .getVirtualItems()
-                .map(
-                  (
-                    virtualRow,
-                  ) => {
-                    const request =
-                      requests[
-                      virtualRow.index
-                      ];
+                .map((virtualRow) => {
+                  const request =
+                    requests[
+                    virtualRow.index
+                    ];
 
-                    if (!request) {
-                      return null;
-                    }
+                  if (!request) {
+                    return null;
+                  }
 
-                    const selected =
-                      selectedRequestId ===
-                      request.id;
+                  const selected =
+                    selectedRequestId ===
+                    request.id;
 
-                    return (
-                      <button
-                        key={
-                          virtualRow.key
+                  return (
+                    <button
+                      key={virtualRow.key}
+                      type="button"
+                      data-testid="request-row"
+                      onClick={() =>
+                        onSelect(
+                          request.id,
+                        )
+                      }
+                      className={cn(
+                        "absolute left-0 top-0 grid w-full",
+                        "grid-cols-[75px_65px_minmax(220px,1fr)_110px_65px_75px_55px]",
+                        "items-center gap-3 border-b border-edge/60 px-4",
+                        "text-left transition-colors",
+                        selected
+                          ? "bg-accent/6"
+                          : "hover:bg-slate-900/2.5",
+                      )}
+                      style={{
+                        height:
+                          ROW_HEIGHT,
+
+                        transform:
+                          `translateY(${virtualRow.start}px)`,
+                      }}
+                    >
+                      <span className="font-mono text-[10px] text-lo tabular-nums">
+                        {
+                          request.time
                         }
-                        type="button"
-                        onClick={() =>
-                          onSelect(
-                            request.id,
-                          )
-                        }
-                        className={cn(
-                          "absolute left-0 top-0 grid w-full",
-                          "grid-cols-[75px_65px_minmax(220px,1fr)_110px_65px_75px_55px]",
-                          "items-center gap-3 border-b border-edge/60 px-4",
-                          "text-left transition-colors",
-                          selected
-                            ? "bg-accent/6"
-                            : "hover:bg-slate-900/2.5",
-                        )}
-                        style={{
-                          height:
-                            ROW_HEIGHT,
+                      </span>
 
-                          transform:
-                            `translateY(${virtualRow.start}px)`,
-                        }}
+                      <MethodBadge
+                        method={
+                          request.method
+                        }
+                      />
+
+                      <span
+                        title={
+                          request.endpoint
+                        }
+                        className="truncate font-mono text-[10px] text-mid"
                       >
-                        <span className="font-mono text-[10px] text-lo tabular-nums">
-                          {
-                            request.time
-                          }
-                        </span>
+                        {
+                          request.endpoint
+                        }
+                      </span>
 
-                        <MethodBadge
-                          method={
-                            request.method
-                          }
-                        />
+                      <span
+                        title={
+                          request.service
+                        }
+                        className="truncate text-[11px] text-mid"
+                      >
+                        {
+                          request.service
+                        }
+                      </span>
 
-                        <span
-                          title={
-                            request.endpoint
-                          }
-                          className="truncate font-mono text-[10px] text-mid"
-                        >
-                          {
-                            request.endpoint
-                          }
-                        </span>
+                      <StatusBadge
+                        status={
+                          request.status
+                        }
+                      />
 
-                        <span
-                          title={
-                            request.service
-                          }
-                          className="truncate text-[11px] text-mid"
-                        >
-                          {
-                            request.service
-                          }
-                        </span>
+                      <span
+                        className={cn(
+                          "font-mono text-[10px] tabular-nums",
 
-                        <StatusBadge
-                          status={
-                            request.status
-                          }
-                        />
+                          request.latency >
+                            300
+                            ? "text-err"
+                            : request.latency >
+                              150
+                              ? "text-warn"
+                              : "text-mid",
+                        )}
+                      >
+                        {
+                          request.latency
+                        }
+                        ms
+                      </span>
 
-                        <span
-                          className={cn(
-                            "font-mono text-[10px] tabular-nums",
-
-                            request.latency >
-                              300
-                              ? "text-err"
-                              : request.latency >
-                                150
-                                ? "text-warn"
-                                : "text-mid",
-                          )}
-                        >
-                          {
-                            request.latency
-                          }
-                          ms
-                        </span>
-
-                        <span className="text-[10px] font-medium text-lo">
-                          {
-                            request.region
-                          }
-                        </span>
-                      </button>
-                    );
-                  },
-                )}
+                      <span className="text-[10px] font-medium text-lo">
+                        {
+                          request.region
+                        }
+                      </span>
+                    </button>
+                  );
+                })}
             </div>
           ) : (
             <div className="flex h-60 items-center justify-center">
