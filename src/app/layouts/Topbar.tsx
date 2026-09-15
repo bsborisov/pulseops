@@ -1,7 +1,7 @@
 import {
-  Bell,
+  //Bell,
   Menu,
-  Search,
+  //Search,
 } from "lucide-react";
 
 import { ConnectionIndicator } from "@/components/ui/ConnectionIndicator";
@@ -102,7 +102,7 @@ export function Topbar({
         )}
       </select>
 
-      <button
+      {/* <button
         type="button"
         aria-label="Search"
         className={cn(
@@ -131,7 +131,7 @@ export function Topbar({
         />
 
         <span className="absolute right-1.5 top-1.5 size-1.5 rounded-full bg-err" />
-      </button>
+      </button> */}
 
       <div className="border-l border-edge pl-3">
         <ConnectionIndicator
