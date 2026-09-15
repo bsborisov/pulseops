@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/Badge";
 
 import type { RequestEvent } from "@shared/monitoring";
+import { cn } from "@/lib/utils";
 
 interface RequestDetailPanelProps {
   request:
@@ -93,12 +94,12 @@ export function RequestDetailPanel({
         role="dialog"
         aria-modal="true"
         aria-label="Request details"
-        className={[
+        className={cn(
           "absolute inset-y-0 right-0",
           "flex w-full flex-col",
           "border-l border-edge bg-surface shadow-2xl",
-          "sm:w-[440px]",
-        ].join(" ")}
+          "sm:w-110",
+        )}
       >
         <header className="flex h-14 shrink-0 items-center gap-3 border-b border-edge px-4">
           <div className="min-w-0 flex-1">
@@ -164,7 +165,7 @@ export function RequestDetailPanel({
 
           <DetailRow label="Latency">
             <span
-              className={[
+              className={cn(
                 "font-mono tabular-nums",
 
                 request.latency >
@@ -174,7 +175,7 @@ export function RequestDetailPanel({
                     150
                     ? "text-warn"
                     : "text-ok",
-              ].join(" ")}
+              )}
             >
               {
                 request.latency

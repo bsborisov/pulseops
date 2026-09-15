@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/Badge";
 
 import type { RequestEvent } from "@shared/monitoring";
+import { cn } from "@/lib/utils";
 
 interface RequestTableProps {
   requests: RequestEvent[];
@@ -44,32 +45,29 @@ export function RequestTable({
       ],
     );
 
-  // TanStack Virtual exposes mutable functions which
-  // React Compiler intentionally cannot memoize safely.
   // eslint-disable-next-line react-hooks/incompatible-library
-  const virtualizer =
-    useVirtualizer({
-      count:
-        requests.length,
+  const virtualizer = useVirtualizer({
+    count:
+      requests.length,
 
-      getScrollElement:
-        () =>
-          scrollRef.current,
+    getScrollElement:
+      () =>
+        scrollRef.current,
 
-      estimateSize:
-        () => ROW_HEIGHT,
+    estimateSize:
+      () => ROW_HEIGHT,
 
-      getItemKey,
+    getItemKey,
 
-      overscan: 12,
+    overscan: 12,
 
-      useFlushSync: false,
+    useFlushSync: false,
 
-      initialRect: {
-        width: 900,
-        height: 600,
-      },
-    });
+    initialRect: {
+      width: 900,
+      height: 600,
+    },
+  });
 
   return (
     <section className="overflow-hidden rounded-lg border border-edge bg-surface shadow-[0_1px_2px_rgba(15,23,42,0.04)]">
@@ -94,10 +92,10 @@ export function RequestTable({
 
       <div
         ref={scrollRef}
-        className={[
+        className={cn(
           "h-[calc(100vh-285px)] min-h-105",
           "overflow-auto",
-        ].join(" ")}
+        )}
       >
         <div className="min-w-200">
           {requests.length >
@@ -139,7 +137,7 @@ export function RequestTable({
                             request.id,
                           )
                         }
-                        className={[
+                        className={cn(
                           "absolute left-0 top-0 grid w-full",
                           "grid-cols-[75px_65px_minmax(220px,1fr)_110px_65px_75px_55px]",
                           "items-center gap-3 border-b border-edge/60 px-4",
@@ -147,8 +145,6 @@ export function RequestTable({
                           selected
                             ? "bg-accent/6"
                             : "hover:bg-slate-900/2.5",
-                        ].join(
-                          " ",
                         )}
                         style={{
                           height:
@@ -199,7 +195,7 @@ export function RequestTable({
                         />
 
                         <span
-                          className={[
+                          className={cn(
                             "font-mono text-[10px] tabular-nums",
 
                             request.latency >
@@ -209,8 +205,6 @@ export function RequestTable({
                                 150
                                 ? "text-warn"
                                 : "text-mid",
-                          ].join(
-                            " ",
                           )}
                         >
                           {

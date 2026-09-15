@@ -6,6 +6,7 @@ import {
 
 import { useOverviewRequestsQuery } from "@/features/overview/queries/overview.queries";
 import { getServiceRequests } from "@/features/services/lib/service-requests";
+import { cn } from "@/lib/utils";
 
 interface ServiceLiveRequestsProps {
   serviceNames: string[];
@@ -82,10 +83,10 @@ export function ServiceLiveRequests({
                 key={
                   request.id
                 }
-                className={[
+                className={cn(
                   "grid grid-cols-[70px_60px_minmax(180px,1fr)_65px_75px_55px]",
                   "gap-2 border-b border-edge/60 px-4 py-2 last:border-0",
-                ].join(" ")}
+                )}
               >
                 <span className="font-mono text-[10px] text-lo">
                   {
@@ -112,7 +113,7 @@ export function ServiceLiveRequests({
                 />
 
                 <span
-                  className={[
+                  className={cn(
                     "font-mono text-[10px] tabular-nums",
 
                     request.latency >
@@ -122,7 +123,7 @@ export function ServiceLiveRequests({
                         150
                         ? "text-warn"
                         : "text-mid",
-                  ].join(" ")}
+                  )}
                 >
                   {
                     request.latency

@@ -8,6 +8,8 @@ import type {
   ServiceHealth,
 } from "../../shared/monitoring.ts";
 
+import type { IncidentStatus } from "../../shared/monitoring.ts";
+
 
 const BASE_TIMESTAMP =
   Date.parse("2026-09-10T08:40:00Z");
@@ -345,4 +347,39 @@ export function getOverviewSnapshot(): OverviewSnapshot {
     endpoints: MOCK_ENDPOINTS,
     incidents: MOCK_INCIDENTS,
   };
+}
+
+export function updateIncidentStatus(
+  incidentId: string,
+  status: IncidentStatus,
+) {
+  const index =
+    MOCK_INCIDENTS.findIndex(
+      (incident) =>
+        incident.id ===
+        incidentId,
+    );
+
+  if (index === -1) {
+    return undefined;
+  }
+
+  const current =
+    MOCK_INCIDENTS[index];
+
+  if (!current) {
+    return undefined;
+  }
+
+  const updated = {
+    ...current,
+    status,
+    updatedAt:
+      new Date().toISOString(),
+  };
+
+  MOCK_INCIDENTS[index] =
+    updated;
+
+  return updated;
 }

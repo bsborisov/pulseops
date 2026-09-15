@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { useOverviewRequestsQuery } from "@/features/overview/queries/overview.queries";
 import { getStatusDistribution } from "@/features/live-traffic/lib/traffic-stats";
+import { cn } from "@/lib/utils";
 
 const statusClasses = {
   2: {
@@ -77,10 +78,10 @@ export function StatusDistribution() {
                     </span>
 
                     <span
-                      className={[
+                      className={cn(
                         "w-12 text-right font-mono text-[11px] font-medium tabular-nums",
                         style.text,
-                      ].join(" ")}
+                      )}
                     >
                       {item.percentage.toFixed(
                         1,
@@ -92,10 +93,10 @@ export function StatusDistribution() {
 
                 <div className="h-1.5 overflow-hidden rounded-full bg-panel">
                   <div
-                    className={[
+                    className={cn(
                       "h-full rounded-full transition-[width] duration-300",
                       style.bar,
-                    ].join(" ")}
+                    )}
                     style={{
                       width: `${item.percentage}%`,
                     }}

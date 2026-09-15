@@ -12,6 +12,7 @@ import {
 } from "@/features/overview/queries/overview.queries";
 
 import type { ServiceStatus } from "@shared/monitoring";
+import { cn } from "@/lib/utils";
 
 const statusStyles:
   Record<
@@ -247,13 +248,13 @@ export function ServicesPage() {
                       `/services/${service.id}`,
                     search,
                   }}
-                  className={[
+                  className={cn(
                     "grid grid-cols-2 gap-3 border-b border-edge/70 px-4 py-3",
                     "transition-colors last:border-0",
                     "hover:bg-slate-900/2.5",
                     "md:grid-cols-[minmax(180px,1fr)_120px_120px_120px_120px]",
                     "md:items-center md:gap-4",
-                  ].join(" ")}
+                  )}
                 >
                   <div className="min-w-0">
                     <div className="truncate text-[13px] font-medium text-hi">
@@ -271,17 +272,17 @@ export function ServicesPage() {
 
                   <div className="flex items-center justify-end gap-1.5 md:justify-start">
                     <span
-                      className={[
+                      className={cn(
                         "size-1.5 rounded-full",
                         status.dot,
-                      ].join(" ")}
+                      )}
                     />
 
                     <span
-                      className={[
+                      className={cn(
                         "text-[11px] font-medium",
                         status.text,
-                      ].join(" ")}
+                      )}
                     >
                       {
                         status.label

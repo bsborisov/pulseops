@@ -16,6 +16,7 @@ import type {
 } from "@shared/monitoring";
 
 import { ServiceLiveRequests } from "./ServiceLiveRequests";
+import { cn } from "@/lib/utils";
 
 const statusStyles:
   Record<
@@ -293,18 +294,18 @@ function ServiceStatus({
 
   return (
     <span
-      className={[
+      className={cn(
         "flex items-center gap-1.5 rounded-full border px-2 py-1",
         "text-[10px] font-medium capitalize",
         style.background,
         style.text,
-      ].join(" ")}
+      )}
     >
       <span
-        className={[
+        className={cn(
           "size-1.5 rounded-full",
           style.dot,
-        ].join(" ")}
+        )}
       />
 
       {service.status}
@@ -440,7 +441,7 @@ function ServiceEndpoints({
                 </span>
 
                 <span
-                  className={[
+                  className={cn(
                     "font-mono text-[11px] tabular-nums",
 
                     endpoint.errorRate >
@@ -450,7 +451,7 @@ function ServiceEndpoints({
                         0.1
                         ? "text-warn"
                         : "text-ok",
-                  ].join(" ")}
+                  )}
                 >
                   {
                     endpoint.errorRate

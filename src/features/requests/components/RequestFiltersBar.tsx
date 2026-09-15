@@ -9,6 +9,7 @@ import {
   STATUS_FILTERS,
   type RequestFilters,
 } from "@/features/requests/lib/request-filters";
+import { cn } from "@/lib/utils";
 
 interface RequestFiltersBarProps {
   filters: RequestFilters;
@@ -33,13 +34,13 @@ interface RequestFiltersBarProps {
   onClear: () => void;
 }
 
-const selectClassName = [
+const selectClassName = cn(
   "rounded-md border border-edge bg-surface",
   "px-2.5 py-2 text-[11px] text-mid",
   "outline-none transition-colors",
   "hover:border-slate-400",
   "focus:border-accent/50",
-].join(" ");
+);
 
 export function RequestFiltersBar({
   filters,
@@ -77,14 +78,14 @@ export function RequestFiltersBar({
           }
           placeholder="Search endpoint, service, ID..."
           aria-label="Search requests"
-          className={[
+          className={cn(
             "w-full rounded-md border border-edge bg-panel",
             "py-2 pl-8 pr-3",
             "text-[11px] text-hi",
             "outline-none transition-colors",
             "placeholder:text-lo",
             "focus:border-accent/50 focus:bg-surface",
-          ].join(" ")}
+          )}
         />
       </div>
 
@@ -204,13 +205,13 @@ export function RequestFiltersBar({
         <button
           type="button"
           onClick={onClear}
-          className={[
+          className={cn(
             "flex items-center gap-1.5 rounded-md",
             "border border-edge px-2.5 py-2",
             "text-[11px] font-medium text-lo",
             "transition-colors",
             "hover:bg-panel hover:text-hi",
-          ].join(" ")}
+          )}
         >
           <X size={12} />
 

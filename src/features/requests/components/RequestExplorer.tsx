@@ -4,10 +4,14 @@ import { RequestDetailPanel } from "./RequestDetailPanel";
 import { RequestFiltersBar } from "./RequestFiltersBar";
 import { RequestTable } from "./RequestTable";
 import { useRequestSearchParams } from "@/features/requests/hooks/useRequestSearchParams";
+import type { RequestEvent } from "@shared/monitoring";
+
+const EMPTY_REQUESTS: RequestEvent[] = [];
 import {
   filterRequests,
   getRequestServices,
 } from "@/features/requests/lib/request-filters";
+import { cn } from "@/lib/utils";
 
 export function RequestExplorer() {
   const {
@@ -29,7 +33,7 @@ export function RequestExplorer() {
     clearFilters,
   } = useRequestSearchParams();
 
-  const sourceRequests = requests ?? [];
+  const sourceRequests = requests ?? EMPTY_REQUESTS;
 
   const services =
     useMemo(
@@ -172,14 +176,14 @@ export function RequestExplorer() {
         <span>
           Errors{" "}
           <strong
-            className={[
+            className={cn(
               "font-mono font-medium tabular-nums",
 
               statistics.errorRate >
                 1
                 ? "text-err"
                 : "text-hi",
-            ].join(" ")}
+            )}
           >
             {statistics.errorRate.toFixed(
               2,

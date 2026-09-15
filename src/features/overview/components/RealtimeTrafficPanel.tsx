@@ -6,6 +6,7 @@ import {
   useOverviewChartQuery,
   useOverviewKpiQuery,
 } from "@/features/overview/queries/overview.queries";
+import { cn } from "@/lib/utils";
 
 
 export function RealtimeTrafficPanel() {
@@ -56,7 +57,7 @@ export function RealtimeTrafficPanel() {
                     range,
                   )
                 }
-                className={[
+                className={cn(
                   "rounded border px-2 py-0.5",
                   "text-[11px] font-medium transition-colors",
 
@@ -64,7 +65,7 @@ export function RealtimeTrafficPanel() {
                     range
                     ? "border-accent/25 bg-accent/15 text-accent"
                     : "border-transparent text-lo hover:text-mid",
-                ].join(" ")}
+                )}
               >
                 {range}
               </button>

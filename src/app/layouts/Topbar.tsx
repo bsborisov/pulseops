@@ -86,11 +86,11 @@ export function Topbar({
           }
         }}
         aria-label="Environment"
-        className={[
+        className={cn(
           "hidden rounded-md border border-edge bg-bg px-3 py-1.5",
           "text-xs font-medium text-hi outline-none transition-colors",
           "hover:border-mid/40 md:block",
-        ].join(" ")}
+        )}
       >
         {ENVIRONMENTS.map(
           (value) => (

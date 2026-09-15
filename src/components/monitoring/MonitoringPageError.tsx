@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import {
   RotateCcw,
   TriangleAlert,
@@ -33,13 +34,13 @@ export function MonitoringPageError({
           type="button"
           onClick={onRetry}
           disabled={retrying}
-          className={[
+          className={cn(
             "mx-auto mt-5 flex items-center gap-2 rounded-md",
             "border border-edge bg-panel px-3 py-2",
             "text-xs font-medium text-mid",
             "transition-colors hover:border-accent/30 hover:text-hi",
             "disabled:cursor-not-allowed disabled:opacity-50",
-          ].join(" ")}
+          )}
         >
           <RotateCcw
             size={13}

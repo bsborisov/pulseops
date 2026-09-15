@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/Badge";
 
 import type { RequestEvent } from "@shared/monitoring";
+import { cn } from "@/lib/utils";
 
 interface LiveRequestStreamProps {
   requests: RequestEvent[];
@@ -172,13 +173,13 @@ export function LiveRequestStream({
 
         <div className="flex items-center gap-1 text-[11px] text-lo">
           <span
-            className={[
+            className={cn(
               "size-1.5 rounded-full",
 
               paused
                 ? "bg-warn"
                 : "bg-ok animate-pulse",
-            ].join(" ")}
+            )}
           />
 
           {paused
@@ -195,23 +196,23 @@ export function LiveRequestStream({
           }
           placeholder="Filter..."
           aria-label="Filter requests"
-          className={[
+          className={cn(
             "w-24 rounded border border-edge bg-bg px-2 py-1",
             "font-mono text-[11px] text-hi outline-none",
             "placeholder:text-lo focus:border-accent/50",
-          ].join(" ")}
+          )}
         />
 
         <button
           type="button"
           onClick={togglePause}
-          className={[
+          className={cn(
             "rounded border px-2 py-1 text-[11px] font-medium transition-colors",
 
             paused
               ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-400"
               : "border-amber-500/30 bg-amber-500/10 text-amber-400",
-          ].join(" ")}
+          )}
         >
           {paused
             ? "Resume"
@@ -233,10 +234,10 @@ export function LiveRequestStream({
       >
         <div className="min-w-162.5">
           <div
-            className={[
+            className={cn(
               "sticky top-0 z-10 grid h-7 items-center gap-2",
               "border-b border-edge bg-surface px-4",
-            ].join(" ")}
+            )}
             style={{
               gridTemplateColumns:
                 "70px 55px minmax(160px,1fr) 55px 65px 45px",
@@ -290,11 +291,11 @@ export function LiveRequestStream({
                           virtualRow.index
                         }
                         data-testid="request-row"
-                        className={[
+                        className={cn(
                           "absolute left-0 top-0 grid w-full items-center gap-2",
                           "border-b border-edge/50 px-4",
                           "transition-colors hover:bg-slate-900/2",
-                        ].join(" ")}
+                        )}
                         style={{
                           height:
                             REQUEST_ROW_HEIGHT,
@@ -338,7 +339,7 @@ export function LiveRequestStream({
                         />
 
                         <span
-                          className={[
+                          className={cn(
                             "font-mono text-[11px] tabular-nums",
 
                             request.latency >
@@ -348,8 +349,6 @@ export function LiveRequestStream({
                                 150
                                 ? "text-warn"
                                 : "text-mid",
-                          ].join(
-                            " ",
                           )}
                         >
                           {
@@ -375,6 +374,6 @@ export function LiveRequestStream({
           )}
         </div>
       </div>
-    </section>
+    </section >
   );
 }

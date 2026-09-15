@@ -8,6 +8,7 @@ import {
 } from "@/features/overview/queries/overview.queries";
 
 import { useDashboardSearchParams } from "@/hooks/useDashboardSearchParams";
+import { cn } from "@/lib/utils";
 
 export function TrafficChartPanel() {
   const {
@@ -64,14 +65,14 @@ export function TrafficChartPanel() {
                     range,
                   )
                 }
-                className={[
+                className={cn(
                   "rounded px-2.5 py-1 text-[11px] font-medium transition-colors",
 
                   timeRange ===
                     range
                     ? "bg-surface text-accent shadow-sm"
                     : "text-lo hover:text-hi",
-                ].join(" ")}
+                )}
               >
                 {range}
               </button>

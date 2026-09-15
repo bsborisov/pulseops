@@ -1,3 +1,5 @@
+import { cn } from "@/lib/utils";
+
 function SkeletonBlock({
   className = "",
 }: {
@@ -5,10 +7,10 @@ function SkeletonBlock({
 }) {
   return (
     <div
-      className={[
+      className={cn(
         "animate-pulse rounded-lg border border-edge bg-surface",
         className,
-      ].join(" ")}
+      )}
     />
   );
 }
@@ -22,24 +24,24 @@ export function MonitoringPageSkeleton() {
         }).map((_, index) => (
           <SkeletonBlock
             key={index}
-            className="h-[110px]"
+            className="h-27.5"
           />
         ))}
       </div>
 
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-5">
-        <SkeletonBlock className="h-[250px] xl:col-span-3" />
+        <SkeletonBlock className="h-62.5 xl:col-span-3" />
 
-        <SkeletonBlock className="h-[250px] xl:col-span-2" />
+        <SkeletonBlock className="h-62.5 xl:col-span-2" />
       </div>
 
       <div className="grid grid-cols-1 gap-3 xl:grid-cols-5">
-        <SkeletonBlock className="h-[360px] xl:col-span-3" />
+        <SkeletonBlock className="h-90 xl:col-span-3" />
 
-        <SkeletonBlock className="h-[360px] xl:col-span-2" />
+        <SkeletonBlock className="h-90 xl:col-span-2" />
       </div>
 
-      <SkeletonBlock className="h-[220px]" />
+      <SkeletonBlock className="h-55" />
     </div>
   );
 }
