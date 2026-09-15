@@ -32,23 +32,23 @@ It combines an initial REST snapshot with continuous WebSocket events, synchroni
 
 ### Overview
 
-> Add screenshot: `docs/screenshots/overview.png`
+![PulseOps Overview](docs/screenshots/overview.png)
 
 ### Live Traffic
 
-> Add screenshot: `docs/screenshots/traffic.png`
+![PulseOps Overview](docs/screenshots/traffic.png)
 
 ### Request Explorer
 
-> Add screenshot: `docs/screenshots/requests.png`
+![PulseOps Overview](docs/screenshots/requests.png)
 
 ### Service Detail
 
-> Add screenshot: `docs/screenshots/service-detail.png`
+![PulseOps Overview](docs/screenshots/service-detail.png)
 
 ### Incidents
 
-> Add screenshot: `docs/screenshots/incidents.png`
+![PulseOps Overview](docs/screenshots/incidents.png)
 
 ---
 
