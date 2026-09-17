@@ -86,3 +86,41 @@ jobs:
             test-results/
           retention-days: 7
           if-no-files-found: ignore
+          deploy:
+  
+  deploy:
+    name: Deploy Production
+
+    needs:
+      - quality
+      - e2e
+
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure SSH
+        env:
+          SSH_KEY: ${{ secrets.PRODUCTION_SSH_KEY }}
+          HOST_KEY: ${{ secrets.PRODUCTION_HOST_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+
+          printf '%s\n' "$HOST_KEY" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/known_hosts
+
+      - name: Deploy PulseOps
+        env:
+          HOST: ${{ secrets.PRODUCTION_HOST }}
+          PORT: ${{ secrets.PRODUCTION_PORT }}
+          USER: ${{ secrets.PRODUCTION_USER }}
+        run: |
+          ssh \
+            -i ~/.ssh/deploy_key \
+            -p "$PORT" \
+            "$USER@$HOST" \
+            "/home/deploy/deploy-pulseops.sh"
